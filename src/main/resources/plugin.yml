@@ -1,0 +1,4 @@
+name: KKZones
+version: '${version}'
+main: com.koolkidzmc.kkzones.KKZones
+api-version: '1.18'
