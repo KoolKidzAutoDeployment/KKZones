@@ -18,7 +18,7 @@ public final class KKZones extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        console.info("Stopping KKZones on the " + config.getString("server") + " server!");
     }
 
     private void initConfig() {
