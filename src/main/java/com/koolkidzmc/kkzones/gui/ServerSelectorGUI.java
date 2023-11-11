@@ -51,7 +51,7 @@ public class ServerSelectorGUI extends FastInv {
     private void fillBackground() {
         for (int i = 0; i < 9; i++) {
             setItem(i, createBackgroundItem().build());
-            setItem(i + 36, createBackgroundItem().build());
+            setItem(i + 18, createBackgroundItem().build());
         }
         for (int i = 1; i < 5; i++) {
             setItem(i * 9, createBackgroundItem().build());
