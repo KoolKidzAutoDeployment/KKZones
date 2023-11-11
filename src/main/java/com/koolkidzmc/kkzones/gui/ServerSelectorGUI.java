@@ -7,6 +7,7 @@ import com.koolkidzmc.kkzones.utils.FastInv;
 import com.koolkidzmc.kkzones.utils.ItemBuilder;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -21,15 +22,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerSelectorGUI extends FastInv {
+    private boolean preventClose = true;
     private final FileConfiguration cfg;
-    private boolean preventClose = false;
     private KKZones plugin;
     public static HashMap<String, ServerInfo> servers = new HashMap<>();
     public static String currentServer;
     private Player player;
 
     public ServerSelectorGUI(KKZones plugin, Player player) {
-        super(45, ColorAPI.formatString("&a&lClaims &7>> &8Settings"));
+        super(35, ColorAPI.formatString("&a&lClaims &7>> &8Settings"));
         this.plugin = plugin;
         this.player = player;
         this.cfg = plugin.getConfig();
@@ -84,7 +85,7 @@ public class ServerSelectorGUI extends FastInv {
                                         .replace("%max_players%", String.valueOf(servers.getMaxPlayers()))
                                         .replace("%motd%", servers.getMotd())));
                     }
-                    ItemStack current = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.current.material"))).name(displayName).lore(lore).build();
+                    ItemStack current = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.current.material"))).name(ColorAPI.formatString(displayName)).lore(lore).build();
                     if (cfg.getBoolean("layouts.current.glow")) {
                         current.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                         current.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -103,7 +104,7 @@ public class ServerSelectorGUI extends FastInv {
                                         .replace("%max_players%", String.valueOf(servers.getMaxPlayers()))
                                         .replace("%motd%", servers.getMotd())));
                     }
-                    ItemStack online = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.online.material"))).name(displayName).lore(lore).build();
+                    ItemStack online = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.online.material"))).name(ColorAPI.formatString(displayName)).lore(lore).build();
                     if (cfg.getBoolean("layouts.online.glow")) {
                         online.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                         online.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -123,7 +124,7 @@ public class ServerSelectorGUI extends FastInv {
                                     .replace("%max_players%", "??")
                                     .replace("%motd%", "????")));
                 }
-                ItemStack offline = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.offline.material"))).name(displayName).lore(lore).build();
+                ItemStack offline = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.offline.material"))).name(ColorAPI.formatString(displayName)).lore(lore).build();
                 if (cfg.getBoolean("layouts.offline.glow")) {
                     offline.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                     offline.addItemFlags(ItemFlag.HIDE_ENCHANTS);
