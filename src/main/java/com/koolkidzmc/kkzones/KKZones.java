@@ -1,6 +1,7 @@
 package com.koolkidzmc.kkzones;
 
 import com.koolkidzmc.kkzones.border.BorderChecker;
+import com.koolkidzmc.kkzones.commands.ServerCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ public final class KKZones extends JavaPlugin {
         console.info("Starting KKZones on the " + config.getString("server") + " server!");
         initConfig();
         BorderChecker.init(this);
+        registerCommands();
     }
 
     @Override
@@ -30,5 +32,10 @@ public final class KKZones extends JavaPlugin {
         } catch (Error e) {
             console.warning("Error Loading Config: " + e);
         }
+    }
+
+    private void initCommands() {
+        this.getCommand("servercommand").setExecutor(new ServerCommand(this));
+
     }
 }
