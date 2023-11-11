@@ -13,10 +13,8 @@ public class MessageSender {
     }
     public void transferServer(String server, Player player) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
-
         out.writeUTF("Connect");
         out.writeUTF(server);
-
         player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
     }
 
