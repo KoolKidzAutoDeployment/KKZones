@@ -2,12 +2,15 @@ package com.koolkidzmc.kkzones.border;
 
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.TaskManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.nio.channels.AsynchronousCloseException;
+import java.util.Collection;
 
 public class BorderChecker {
     public static void init(KKZones plugin) {
+        plugin.getLogger().info("Setting Messsage Channels...");
+        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         plugin.getLogger().info("Starting Asynchronous Tasks...");
         try {
             TaskManager.Async.runTask(checkLoc, 5);
@@ -18,6 +21,9 @@ public class BorderChecker {
     }
 
     static Runnable checkLoc = () -> {
+        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+        for (Player player : players) {
 
+        }
     };
 }

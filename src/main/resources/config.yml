@@ -3,6 +3,45 @@ prefix: "&d&lKKZones &8>>"
 # The name of the server running the plugin, as defined in the velocity/bungeecord config.
 server: ""
 
+# Servers to display in the gui
+server-list:
+  survival-zone-01:
+    host: 127.0.0.1
+    port: 25566
+    displayname: Survival Zone 1
+    slot: 10
+  survival-zone-02:
+    host: 127.0.0.1
+    port: 25567
+    displayname: Survival Zone 2
+    slot: 11
+
+# Modify how the item looks depending on the status of the server
+layouts:
+  online:
+    material: EMERALD_BLOCK
+    subid: 1
+    glow: false
+    displayname: '&b%server%'
+    lore:
+      - ' &8● &7This server is &aonline&8.'
+      - ' &8● &7Players online&8: &f%players%'
+  offline:
+    material: REDSTONE_BLOCK
+    subid: 1
+    glow: false
+    displayname: '&b%server%'
+    lore:
+      - ' &8● &7This server is &coffline&8.'
+  current:
+    material: EMERALD
+    subid: 5
+    glow: true
+    displayname: '&b%server%'
+    lore:
+      - ' &8● &7You &aare connected &7to this server&8.'
+      - ' &8● &7Players online&8: &f%players%'
+
 # What server the player will get teleported to depending on what worldborder they get to.
 servers:
   north: "survival-zone-01"
