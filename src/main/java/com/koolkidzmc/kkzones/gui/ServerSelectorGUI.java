@@ -30,7 +30,7 @@ public class ServerSelectorGUI extends FastInv {
     private Player player;
 
     public ServerSelectorGUI(KKZones plugin, Player player) {
-        super(35, ColorAPI.formatString("&a&lClaims &7>> &8Settings"));
+        super(27, ColorAPI.formatString("&a&lClaims &7>> &8Settings"));
         this.plugin = plugin;
         this.player = player;
         this.cfg = plugin.getConfig();
