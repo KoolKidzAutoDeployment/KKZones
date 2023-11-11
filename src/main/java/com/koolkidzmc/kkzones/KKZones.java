@@ -9,12 +9,11 @@ import java.util.logging.Logger;
 public final class KKZones extends JavaPlugin {
     Logger console = getLogger();
     FileConfiguration config = getConfig();
-    public String thisServer = "";
     @Override
     public void onEnable() {
         console.info("Starting KKZones on the " + config.getString("server") + " server!");
-        BorderChecker.init();
-
+        initConfig();
+        BorderChecker.init(this);
     }
 
     @Override
