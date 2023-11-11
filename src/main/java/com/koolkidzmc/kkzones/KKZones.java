@@ -35,7 +35,7 @@ public final class KKZones extends JavaPlugin {
     }
 
     private void registerCommands() {
-        this.getCommand("servercommand").setExecutor(new ServerCommand(this));
+        this.getCommand("server").setExecutor(new ServerCommand(this));
 
     }
 }
