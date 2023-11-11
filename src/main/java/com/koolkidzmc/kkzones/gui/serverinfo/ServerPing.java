@@ -3,7 +3,7 @@ package com.koolkidzmc.kkzones.gui.serverinfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+import com.google.gson.JsonParseException;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -79,7 +79,7 @@ public class ServerPing {
         JsonParser parser = new JsonParser();
         try {
             jsonObject = (JsonObject) parser.parse(jsonString);
-        } catch (ParseException ex) {
+        } catch (JsonParseException ex) {
             Logger.getLogger(ServerPing.class.getName()).log(Level.SEVERE, null, ex);
         }
         JsonObject jsonVersion = (JsonObject) jsonObject.get("version");
