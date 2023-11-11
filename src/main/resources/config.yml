@@ -1,0 +1,17 @@
+prefix: "&d&lKKZones &8>>"
+
+# The name of the server running the plugin, as defined in the velocity/bungeecord config.
+server: ""
+
+# What server the player will get teleported to depending on what worldborder they get to.
+servers:
+  north: "survival-zone-01"
+  south: "survival-zone-02"
+  east: "survival-zone-03"
+  west: "survival-zone-04"
+
+# Most likely wont be needed, but here incase i find a use for it
+redis:
+  host: "127.0.0.1"
+  port: "4490"
+  password: "balls"
