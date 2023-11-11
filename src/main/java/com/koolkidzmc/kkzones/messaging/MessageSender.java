@@ -6,7 +6,6 @@ import com.koolkidzmc.kkzones.KKZones;
 import org.bukkit.entity.Player;
 
 public class MessageSender {
-
     private final KKZones plugin;
     public MessageSender(KKZones plugin) {
         this.plugin = plugin;
