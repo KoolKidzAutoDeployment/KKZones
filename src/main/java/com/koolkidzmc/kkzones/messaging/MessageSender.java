@@ -5,8 +5,6 @@ import com.google.common.io.ByteStreams;
 import com.koolkidzmc.kkzones.KKZones;
 import org.bukkit.entity.Player;
 
-import static org.bukkit.Bukkit.getOnlinePlayers;
-
 public class MessageSender {
 
     private final KKZones plugin;
