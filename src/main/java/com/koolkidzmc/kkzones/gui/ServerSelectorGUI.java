@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
@@ -30,7 +31,7 @@ public class ServerSelectorGUI extends FastInv {
     private Player player;
 
     public ServerSelectorGUI(KKZones plugin, Player player) {
-        super(27, ColorAPI.formatString("&a&lClaims &7>> &8Settings"));
+        super(27, ColorAPI.formatString("&dServer Selector"));
         this.plugin = plugin;
         this.player = player;
         this.cfg = plugin.getConfig();
@@ -70,7 +71,30 @@ public class ServerSelectorGUI extends FastInv {
             slotMap.put(i, i + 10);
         }
 
-        for (ServerInfo servers : servers.values()) {
+
+
+
+    }
+
+    private void addNavigationButtons(Player player) {
+        setItem(18, createNavigationItem(Material.BARRIER, "&c&lClose", "&7\u279C Click to close"), e -> {
+            SoundAPI.fail(player);
+            e.getClickedInventory().close();
+        });
+    }
+
+    private ItemStack createNavigationItem(Material material, String displayName, String lore) {
+        return new ItemBuilder(material)
+                .flags(ItemFlag.HIDE_ATTRIBUTES)
+                .name(ColorAPI.formatString(displayName))
+                .addLore(ColorAPI.formatString(lore))
+                .build();
+    }
+
+
+}
+/*
+for (ServerInfo servers : servers.values()) {
 
             if (servers.isOnline()) {
                 // CURRENT >
@@ -132,22 +156,4 @@ public class ServerSelectorGUI extends FastInv {
                 setItem(servers.getSlot(), offline);
                 // < OFFLINE
             }
-
-        }
-    }
-
-    private void addNavigationButtons(Player player) {
-        setItem(18, createNavigationItem(Material.BARRIER, "&c&lClose", "&7\u279C Click to close"), e -> {
-            SoundAPI.fail(player);
-            e.getClickedInventory().close();
-        });
-    }
-
-    private ItemStack createNavigationItem(Material material, String displayName, String lore) {
-        return new ItemBuilder(material)
-                .flags(ItemFlag.HIDE_ATTRIBUTES)
-                .name(ColorAPI.formatString(displayName))
-                .addLore(ColorAPI.formatString(lore))
-                .build();
-    }
-}
+ */
