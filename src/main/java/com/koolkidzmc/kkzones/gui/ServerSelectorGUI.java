@@ -137,7 +137,7 @@ public class ServerSelectorGUI extends FastInv {
     }
 
     private void addNavigationButtons(Player player) {
-        setItem(36, createNavigationItem(Material.BARRIER, "&c&lClose", "&7\u279C Click to close"), e -> {
+        setItem(18, createNavigationItem(Material.BARRIER, "&c&lClose", "&7\u279C Click to close"), e -> {
             SoundAPI.fail(player);
             e.getClickedInventory().close();
         });
