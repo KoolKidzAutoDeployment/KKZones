@@ -2,6 +2,7 @@ package com.koolkidzmc.kkzones.commands;
 
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.gui.serverinfo.ServerPing;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -2,6 +2,7 @@ package com.koolkidzmc.kkzones.gui;
 
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.gui.serverinfo.ServerInfo;
+import com.koolkidzmc.kkzones.gui.serverinfo.ServerPing;
 import com.koolkidzmc.kkzones.utils.ColorAPI;
 import com.koolkidzmc.kkzones.utils.FastInv;
 import com.koolkidzmc.kkzones.utils.ItemBuilder;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +38,26 @@ public class ServerSelectorGUI extends FastInv {
         this.player = player;
         this.cfg = plugin.getConfig();
 
-        for (String server : cfg.getConfigurationSection("server-list").getKeys(false)) {
-            String host = cfg.getString("server-list." + server + ".host");
-            int port = cfg.getInt("server-list." + server + ".port");
-            String displayName = cfg.getString("server-list." + server + ".displayname");
-            int slot = cfg.getInt("server-list." + server + ".slot");
-            servers.put(server, new ServerInfo(server, host, port, displayName, slot));
+        for (String servers : cfg.getConfigurationSection("server-list").getKeys(false)) {
+            String host = cfg.getString("server-list." + servers + ".host");
+            int port = cfg.getInt("server-list." + servers + ".port");
+            String displayName = cfg.getString("server-list." + servers + ".displayname");
+            int slot = cfg.getInt("server-list." + servers + ".slot");
+            ServerSelectorGUI.servers.put(servers, new ServerInfo(servers, host, port, displayName, slot));
+        }
+
+        for (ServerInfo servers : ServerSelectorGUI.servers.values()) {
+            ServerPing ping = servers.getServerPing();
+            ServerPing.DefaultResponse response;
+            try {
+                response = ping.fetchData();
+                servers.setOnline(true);
+                servers.setMotd(response.description);
+                servers.setPlayerCount(response.getPlayers());
+                servers.setMaxPlayers(response.getMaxPlayers());
+            } catch (IOException ex) {
+                servers.setOnline(false);
+            }
         }
 
         fillBackground();
