@@ -46,20 +46,6 @@ public class ServerSelectorGUI extends FastInv {
             ServerSelectorGUI.servers.put(servers, new ServerInfo(servers, host, port, displayName, slot));
         }
 
-        for (ServerInfo servers : ServerSelectorGUI.servers.values()) {
-            ServerPing ping = servers.getServerPing();
-            ServerPing.DefaultResponse response;
-            try {
-                response = ping.fetchData();
-                servers.setOnline(true);
-                servers.setMotd(response.description);
-                servers.setPlayerCount(response.getPlayers());
-                servers.setMaxPlayers(response.getMaxPlayers());
-            } catch (IOException ex) {
-                servers.setOnline(false);
-            }
-        }
-
         fillBackground();
         populateServerSlots();
         addNavigationButtons(player);

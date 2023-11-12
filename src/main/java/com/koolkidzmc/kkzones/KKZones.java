@@ -2,7 +2,9 @@ package com.koolkidzmc.kkzones;
 
 import com.koolkidzmc.kkzones.border.BorderChecker;
 import com.koolkidzmc.kkzones.commands.ServerCommand;
+import com.koolkidzmc.kkzones.gui.serverinfo.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
+import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,7 +18,10 @@ public final class KKZones extends JavaPlugin {
         console.info("Starting KKZones on the " + config.getString("server") + " server!");
         initConfig();
         FastInvManager.register(this);
+        console.info("Starting Asynchronous Tasks...");
         BorderChecker.init(this);
+        new ServerPinger().init();
+        console.info("Asynchronous Tasks Started!");
         registerCommands();
     }
 
