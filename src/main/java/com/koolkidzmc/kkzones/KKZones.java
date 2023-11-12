@@ -2,6 +2,7 @@ package com.koolkidzmc.kkzones;
 
 import com.koolkidzmc.kkzones.border.BorderChecker;
 import com.koolkidzmc.kkzones.commands.ServerCommand;
+import com.koolkidzmc.kkzones.utils.FastInvManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ public final class KKZones extends JavaPlugin {
     public void onEnable() {
         console.info("Starting KKZones on the " + config.getString("server") + " server!");
         initConfig();
+        FastInvManager.register(this);
         BorderChecker.init(this);
         registerCommands();
     }
