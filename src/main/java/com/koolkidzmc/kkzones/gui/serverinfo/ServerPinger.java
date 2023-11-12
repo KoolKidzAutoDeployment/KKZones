@@ -52,6 +52,7 @@ public class ServerPinger {
         for (Player players : Bukkit.getOnlinePlayers()) {
             if (players.getOpenInventory().getTitle().equals(
                     ChatColor.translateAlternateColorCodes('&', "&dServer Selector"))) {
+                players.sendMessage("test");
                 for (ServerInfo server : ServerSelectorGUI.servers.values()) {
 
                     if (server.isOnline()) {
