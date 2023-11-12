@@ -45,7 +45,7 @@ public class ServerPinger<ArrayList> {
         }
 
         for (Player players : Bukkit.getOnlinePlayers()) {
-            if (players.getOpenInventory().getTitle().equals(
+            if (players.getOpenInventory().title().toString().equals(
                     ChatColor.translateAlternateColorCodes('&', "&dServer Selector"))) {
                 players.getOpenInventory().getTopInventory().clear();
                 for (ServerInfo server : ServerSelectorGUI.servers.values()) {

@@ -63,8 +63,6 @@ public class ServerSelectorGUI extends FastInv {
                     servers.setOnline(false);
                 }
             }
-
-            populateServerSlots();
         };
         addNavigationButtons(player);
     }
