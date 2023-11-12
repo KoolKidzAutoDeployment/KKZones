@@ -87,7 +87,7 @@ public class ServerSelectorGUI extends FastInv {
             slotMap.put(i, i + 10);
         }
 
-        for (ServerInfo server : servers.values()) {
+        for (ServerInfo server : ServerSelectorGUI.servers.values()) {
 
             if (server.isOnline()) {
                 // CURRENT >
@@ -112,7 +112,7 @@ public class ServerSelectorGUI extends FastInv {
                 } else {
                     // ONLINE >
                     String displayName = plugin.getConfig().getString("layouts.online.displayname")
-                            .replace("%server%", server.getDisplayName().toString());
+                            .replace("%server%", server.getDisplayName());
 
                     ArrayList<String> lore = new ArrayList<>();
                     for (String string : cfg.getStringList("layouts.online.lore")) {
