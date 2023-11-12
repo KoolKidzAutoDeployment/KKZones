@@ -17,19 +17,24 @@ import org.bukkit.inventory.ItemStack;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ServerPinger<ArrayList> {
+public class ServerPinger {
     private KKZones plugin;
     public void init(KKZones plugin) {
         this.plugin = plugin;
-        plugin.getLogger().info("Setting Messsage Channels...");
-        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         try {
             TaskManager.Async.runTask(pingServers, 5);
         } catch (Exception e) {
-            plugin.getLogger().warning("Error while starting Asynchronous Task [checkLoc]: " + e);
+            plugin.getLogger().warning("Error while starting Asynchronous Task [pingServers]: " + e);
         }
     }
     Runnable pingServers = () -> {
+        for (String servers : plugin.getConfig().getConfigurationSection("server-list").getKeys(false)) {
+            String host = plugin.getConfig().getString("server-list." + servers + ".host");
+            int port = plugin.getConfig().getInt("server-list." + servers + ".port");
+            String displayName = plugin.getConfig().getString("server-list." + servers + ".displayname");
+            int slot = plugin.getConfig().getInt("server-list." + servers + ".slot");
+            ServerSelectorGUI.servers.put(servers, new ServerInfo(servers, host, port, displayName, slot));
+        }
         for (ServerInfo servers : ServerSelectorGUI.servers.values()) {
             ServerPing ping = servers.getServerPing();
             ServerPing.DefaultResponse response;
