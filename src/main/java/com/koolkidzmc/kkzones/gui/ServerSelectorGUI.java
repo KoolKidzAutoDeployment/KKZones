@@ -71,52 +71,52 @@ public class ServerSelectorGUI extends FastInv {
             slotMap.put(i, i + 10);
         }
 
-        for (ServerInfo servers : servers.values()) {
+        for (ServerInfo server : servers.values()) {
 
-            if (servers.isOnline()) {
+            if (server.isOnline()) {
                 // CURRENT >
-                if (servers.getServerName().equals(currentServer)) {
+                if (server.getServerName().equals(currentServer)) {
                     String displayName = plugin.getConfig().getString("layouts.current.displayname")
-                            .replace("%server%", servers.getDisplayName());
+                            .replace("%server%", server.getDisplayName());
 
                     ArrayList<String> lore = new ArrayList<>();
                     for (String string : cfg.getStringList("layouts.current.lore")) {
                         lore.add(ChatColor.translateAlternateColorCodes('&',
-                                string.replace("%players%", String.valueOf(servers.getPlayerCount()))
-                                        .replace("%max_players%", String.valueOf(servers.getMaxPlayers()))
-                                        .replace("%motd%", servers.getMotd())));
+                                string.replace("%players%", String.valueOf(server.getPlayerCount()))
+                                        .replace("%max_players%", String.valueOf(server.getMaxPlayers()))
+                                        .replace("%motd%", server.getMotd())));
                     }
                     ItemStack current = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.current.material"))).name(ColorAPI.formatString(displayName)).lore(lore).build();
                     if (cfg.getBoolean("layouts.current.glow")) {
                         current.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                         current.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     }
-                    setItem(servers.getSlot(), current);
+                    setItem(server.getSlot(), current);
                     // < CURRENT
                 } else {
                     // ONLINE >
                     String displayName = plugin.getConfig().getString("layouts.online.displayname")
-                            .replace("%server%", servers.getDisplayName());
+                            .replace("%server%", server.getDisplayName());
 
                     ArrayList<String> lore = new ArrayList<>();
                     for (String string : cfg.getStringList("layouts.online.lore")) {
                         lore.add(ChatColor.translateAlternateColorCodes('&',
-                                string.replace("%players%", String.valueOf(servers.getPlayerCount()))
-                                        .replace("%max_players%", String.valueOf(servers.getMaxPlayers()))
-                                        .replace("%motd%", servers.getMotd())));
+                                string.replace("%players%", String.valueOf(server.getPlayerCount()))
+                                        .replace("%max_players%", String.valueOf(server.getMaxPlayers()))
+                                        .replace("%motd%", server.getMotd())));
                     }
                     ItemStack online = new ItemBuilder(Material.getMaterial(cfg.getString("layouts.online.material"))).name(ColorAPI.formatString(displayName)).lore(lore).build();
                     if (cfg.getBoolean("layouts.online.glow")) {
                         online.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                         online.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     }
-                    setItem(servers.getSlot(), online);
+                    setItem(server.getSlot(), online);
                     // < ONLINE
                 }
             } else {
                 // OFFLINE >
                 String displayName = plugin.getConfig().getString("layouts.offline.displayname")
-                        .replace("%server%", servers.getDisplayName());
+                        .replace("%server%", server.getDisplayName());
 
                 ArrayList<String> lore = new ArrayList<>();
                 for (String string : cfg.getStringList("layouts.offline.lore")) {
@@ -130,7 +130,7 @@ public class ServerSelectorGUI extends FastInv {
                     offline.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                     offline.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 }
-                setItem(servers.getSlot(), offline);
+                setItem(server.getSlot(), offline);
                 // < OFFLINE
             }
 

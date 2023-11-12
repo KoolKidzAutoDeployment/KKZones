@@ -11,7 +11,7 @@ permissions:
 commands:
   server:
     description: 'server menu'
-    usage: '/server'
+    usage: '/serverlist'
     aliases:
       - server
       - serverlist
