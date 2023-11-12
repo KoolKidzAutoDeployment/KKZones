@@ -20,7 +20,7 @@ public final class KKZones extends JavaPlugin {
         FastInvManager.register(this);
         console.info("Starting Asynchronous Tasks...");
         BorderChecker.init(this);
-        new ServerPinger().init();
+        new ServerPinger().init(this.getConfig());
         console.info("Asynchronous Tasks Started!");
         registerCommands();
     }

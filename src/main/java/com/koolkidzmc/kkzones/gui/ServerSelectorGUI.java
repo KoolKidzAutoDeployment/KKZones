@@ -32,19 +32,12 @@ public class ServerSelectorGUI extends FastInv {
     public static String currentServer;
     private Player player;
 
+
     public ServerSelectorGUI(KKZones plugin, Player player) {
         super(27, ColorAPI.formatString("&dServer Selector"));
         this.plugin = plugin;
         this.player = player;
         this.cfg = plugin.getConfig();
-
-        for (String servers : cfg.getConfigurationSection("server-list").getKeys(false)) {
-            String host = cfg.getString("server-list." + servers + ".host");
-            int port = cfg.getInt("server-list." + servers + ".port");
-            String displayName = cfg.getString("server-list." + servers + ".displayname");
-            int slot = cfg.getInt("server-list." + servers + ".slot");
-            ServerSelectorGUI.servers.put(servers, new ServerInfo(servers, host, port, displayName, slot));
-        }
 
         fillBackground();
         populateServerSlots();
