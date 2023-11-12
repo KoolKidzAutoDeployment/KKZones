@@ -112,7 +112,7 @@ public class ServerSelectorGUI extends FastInv {
                 } else {
                     // ONLINE >
                     String displayName = plugin.getConfig().getString("layouts.online.displayname")
-                            .replace("%server%", server.getDisplayName());
+                            .replace("%server%", server.getDisplayName().toString());
 
                     ArrayList<String> lore = new ArrayList<>();
                     for (String string : cfg.getStringList("layouts.online.lore")) {
