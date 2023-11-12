@@ -60,7 +60,7 @@ public class ServerSelectorGUI extends FastInv {
                 .lore(ColorAPI.formatString("&8www.koolkidzmc.com"));
     }
 
-    private void populateServerSlots() {
+    public void populateServerSlots() {
         Map<Integer, Integer> slotMap = new HashMap<>();
         for (int i = 0; i < 21; i++) {
             slotMap.put(i, i + 10);

@@ -53,6 +53,8 @@ public class ServerPinger {
             if (players.getOpenInventory().getTitle().equals(
                     ChatColor.translateAlternateColorCodes('&', "&dServer Selector"))) {
                 players.sendMessage("test");
+                new ServerSelectorGUI(plugin, players).populateServerSlots();
+                /*
                 for (ServerInfo server : ServerSelectorGUI.servers.values()) {
 
                     if (server.isOnline()) {
@@ -117,6 +119,7 @@ public class ServerPinger {
                     }
 
                 }
+                */
             }
         }
     };
