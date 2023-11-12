@@ -40,7 +40,32 @@ public class ServerSelectorGUI extends FastInv {
         this.cfg = plugin.getConfig();
 
         fillBackground();
-        populateServerSlots();
+
+        Runnable pingServers = () -> {
+            for (String servers : cfg.getConfigurationSection("server-list").getKeys(false)) {
+                String host = cfg.getString("server-list." + servers + ".host");
+                int port = cfg.getInt("server-list." + servers + ".port");
+                String displayName = cfg.getString("server-list." + servers + ".displayname");
+                int slot = cfg.getInt("server-list." + servers + ".slot");
+                ServerSelectorGUI.servers.put(servers, new ServerInfo(servers, host, port, displayName, slot));
+            }
+
+            for (ServerInfo servers : ServerSelectorGUI.servers.values()) {
+                ServerPing ping = servers.getServerPing();
+                ServerPing.DefaultResponse response;
+                try {
+                    response = ping.fetchData();
+                    servers.setOnline(true);
+                    servers.setMotd(response.description);
+                    servers.setPlayerCount(response.getPlayers());
+                    servers.setMaxPlayers(response.getMaxPlayers());
+                } catch (IOException ex) {
+                    servers.setOnline(false);
+                }
+            }
+
+            populateServerSlots();
+        };
         addNavigationButtons(player);
     }
 
