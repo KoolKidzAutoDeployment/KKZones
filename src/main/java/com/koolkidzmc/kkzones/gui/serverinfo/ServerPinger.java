@@ -68,7 +68,7 @@ public class ServerPinger<ArrayList> {
                                 current.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                                 current.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                             }
-                            players.getOpenInventory().getTopInventory().setItem(server.getSlot(), current);
+                            new ServerSelectorGUI(KKZones.getPlugin(KKZones.class), players).setItem(server.getSlot(), current);
                             // < CURRENT
                         } else {
                             // ONLINE >
@@ -87,7 +87,7 @@ public class ServerPinger<ArrayList> {
                                 online.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                                 online.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                             }
-                            players.getOpenInventory().getTopInventory().setItem(server.getSlot(), online);
+                            new ServerSelectorGUI(KKZones.getPlugin(KKZones.class), players).setItem(server.getSlot(), online);
                             // < ONLINE
                         }
                     } else {
@@ -107,7 +107,7 @@ public class ServerPinger<ArrayList> {
                             offline.addEnchantment(Enchantment.ARROW_INFINITE, 1);
                             offline.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                         }
-                        players.getOpenInventory().getTopInventory().setItem(server.getSlot(), offline);
+                        new ServerSelectorGUI(KKZones.getPlugin(KKZones.class), players).setItem(server.getSlot(), offline);
                         // < OFFLINE
                     }
 
