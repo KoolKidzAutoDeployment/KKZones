@@ -71,30 +71,7 @@ public class ServerSelectorGUI extends FastInv {
             slotMap.put(i, i + 10);
         }
 
-
-
-
-    }
-
-    private void addNavigationButtons(Player player) {
-        setItem(18, createNavigationItem(Material.BARRIER, "&c&lClose", "&7\u279C Click to close"), e -> {
-            SoundAPI.fail(player);
-            e.getClickedInventory().close();
-        });
-    }
-
-    private ItemStack createNavigationItem(Material material, String displayName, String lore) {
-        return new ItemBuilder(material)
-                .flags(ItemFlag.HIDE_ATTRIBUTES)
-                .name(ColorAPI.formatString(displayName))
-                .addLore(ColorAPI.formatString(lore))
-                .build();
-    }
-
-
-}
-/*
-for (ServerInfo servers : servers.values()) {
+        for (ServerInfo servers : servers.values()) {
 
             if (servers.isOnline()) {
                 // CURRENT >
@@ -156,4 +133,24 @@ for (ServerInfo servers : servers.values()) {
                 setItem(servers.getSlot(), offline);
                 // < OFFLINE
             }
- */
+
+        }
+    }
+
+    private void addNavigationButtons(Player player) {
+        setItem(18, createNavigationItem(Material.BARRIER, "&c&lClose", "&7\u279C Click to close"), e -> {
+            SoundAPI.fail(player);
+            e.getClickedInventory().close();
+        });
+    }
+
+    private ItemStack createNavigationItem(Material material, String displayName, String lore) {
+        return new ItemBuilder(material)
+                .flags(ItemFlag.HIDE_ATTRIBUTES)
+                .name(ColorAPI.formatString(displayName))
+                .addLore(ColorAPI.formatString(lore))
+                .build();
+    }
+
+
+}
