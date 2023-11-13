@@ -1,7 +1,6 @@
 package com.koolkidzmc.kkzones.gui.serverinfo;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
