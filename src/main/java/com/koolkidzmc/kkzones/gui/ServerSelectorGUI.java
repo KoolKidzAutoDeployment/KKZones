@@ -1,29 +1,19 @@
 package com.koolkidzmc.kkzones.gui;
 
 import com.koolkidzmc.kkzones.KKZones;
-import com.koolkidzmc.kkzones.gui.serverinfo.ServerInfo;
-import com.koolkidzmc.kkzones.gui.serverinfo.ServerPing;
 import com.koolkidzmc.kkzones.utils.ColorAPI;
 import com.koolkidzmc.kkzones.utils.FastInv;
 import com.koolkidzmc.kkzones.utils.ItemBuilder;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class ServerSelectorGUI extends FastInv {
     private final FileConfiguration cfg;
     private final KKZones plugin;
-    public static HashMap<String, ServerInfo> servers = new HashMap<>();
     public static String currentServer;
 
 
@@ -54,91 +44,7 @@ public class ServerSelectorGUI extends FastInv {
     }
 
     public void populateServerSlots() {
-        for (String servers : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("server-list")).getKeys(false)) {
-            String host = plugin.getConfig().getString("server-list." + servers + ".host");
-            int port = plugin.getConfig().getInt("server-list." + servers + ".port");
-            String displayName = plugin.getConfig().getString("server-list." + servers + ".displayname");
-            int slot = plugin.getConfig().getInt("server-list." + servers + ".slot");
-            ServerSelectorGUI.servers.put(servers, new ServerInfo(servers, host, port, displayName, slot));
-        }
-        for (ServerInfo servers : ServerSelectorGUI.servers.values()) {
-            ServerPing ping = servers.getServerPing();
-            ServerPing.DefaultResponse response;
-            try {
-                response = ping.fetchData();
-                servers.setOnline(true);
-                servers.setMotd(response.description);
-                servers.setPlayerCount(response.getPlayers());
-                servers.setMaxPlayers(response.getMaxPlayers());
-            } catch (IOException ex) {
-                servers.setOnline(false);
-            }
-        }
-
-        for (ServerInfo server : ServerSelectorGUI.servers.values()) {
-
-            if (server.isOnline()) {
-                // CURRENT >
-                if (server.getServerName().equals(currentServer)) {
-                    String displayName = Objects.requireNonNull(plugin.getConfig().getString("layouts.current.displayname"))
-                            .replace("%server%", server.getDisplayName());
-
-                    ArrayList<String> lore = new ArrayList<>();
-                    for (String string : cfg.getStringList("layouts.current.lore")) {
-                        lore.add(ChatColor.translateAlternateColorCodes('&',
-                                string.replace("%players%", String.valueOf(server.getPlayerCount()))
-                                        .replace("%max_players%", String.valueOf(server.getMaxPlayers()))
-                                        .replace("%motd%", server.getMotd())));
-                    }
-                    ItemStack current = new ItemBuilder(Material.getMaterial(Objects.requireNonNull(cfg.getString("layouts.current.material")))).name(ColorAPI.formatString(displayName)).lore(lore).build();
-                    if (cfg.getBoolean("layouts.current.glow")) {
-                        current.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-                        current.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    }
-                    setItem(server.getSlot(), current);
-                    // < CURRENT
-                } else {
-                    // ONLINE >
-                    String displayName = Objects.requireNonNull(plugin.getConfig().getString("layouts.online.displayname"))
-                            .replace("%server%", server.getDisplayName());
-
-                    ArrayList<String> lore = new ArrayList<>();
-                    for (String string : cfg.getStringList("layouts.online.lore")) {
-                        lore.add(ChatColor.translateAlternateColorCodes('&',
-                                string.replace("%players%", String.valueOf(server.getPlayerCount()))
-                                        .replace("%max_players%", String.valueOf(server.getMaxPlayers()))
-                                        .replace("%motd%", server.getMotd())));
-                    }
-                    ItemStack online = new ItemBuilder(Material.getMaterial(Objects.requireNonNull(cfg.getString("layouts.online.material")))).name(ColorAPI.formatString(displayName)).lore(lore).build();
-                    if (cfg.getBoolean("layouts.online.glow")) {
-                        online.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-                        online.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    }
-                    setItem(server.getSlot(), online);
-                    // < ONLINE
-                }
-            } else {
-                // OFFLINE >
-                String displayName = Objects.requireNonNull(plugin.getConfig().getString("layouts.offline.displayname"))
-                        .replace("%server%", server.getDisplayName());
-
-                ArrayList<String> lore = new ArrayList<>();
-                for (String string : cfg.getStringList("layouts.offline.lore")) {
-                    lore.add(ChatColor.translateAlternateColorCodes('&',
-                            string.replace("%players%", "0")
-                                    .replace("%max_players%", "??")
-                                    .replace("%motd%", "????")));
-                }
-                ItemStack offline = new ItemBuilder(Material.getMaterial(Objects.requireNonNull(cfg.getString("layouts.offline.material")))).name(ColorAPI.formatString(displayName)).lore(lore).build();
-                if (cfg.getBoolean("layouts.offline.glow")) {
-                    offline.addEnchantment(Enchantment.ARROW_INFINITE, 1);
-                    offline.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                }
-                setItem(server.getSlot(), offline);
-                // < OFFLINE
-            }
-
-        }
+        //TODO: Get server stats and add it to gui.
     }
 
     private void addNavigationButtons(Player player) {
