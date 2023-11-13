@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'com.koolkidzmc'
@@ -46,4 +47,9 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    relocate("redis.clients.jedis", "com.koolkidzmc.kkzones.redis.clients.jedis")
+    relocate("org.apache.commons", "com.koolkidzmc.kkzones.org.apache.commons")
 }
