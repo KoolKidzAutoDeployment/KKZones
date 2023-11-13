@@ -66,6 +66,27 @@ public class ServerSelectorGUI extends FastInv {
             slotMap.put(i, i + 10);
         }
 
+        for (String servers : plugin.getConfig().getConfigurationSection("server-list").getKeys(false)) {
+            String host = plugin.getConfig().getString("server-list." + servers + ".host");
+            int port = plugin.getConfig().getInt("server-list." + servers + ".port");
+            String displayName = plugin.getConfig().getString("server-list." + servers + ".displayname");
+            int slot = plugin.getConfig().getInt("server-list." + servers + ".slot");
+            ServerSelectorGUI.servers.put(servers, new ServerInfo(servers, host, port, displayName, slot));
+        }
+        for (ServerInfo servers : ServerSelectorGUI.servers.values()) {
+            ServerPing ping = servers.getServerPing();
+            ServerPing.DefaultResponse response;
+            try {
+                response = ping.fetchData();
+                servers.setOnline(true);
+                servers.setMotd(response.description);
+                servers.setPlayerCount(response.getPlayers());
+                servers.setMaxPlayers(response.getMaxPlayers());
+            } catch (IOException ex) {
+                servers.setOnline(false);
+            }
+        }
+
         for (ServerInfo server : ServerSelectorGUI.servers.values()) {
 
             if (server.isOnline()) {
