@@ -30,7 +30,6 @@ public class ServerPinger {
         long startTime = System.currentTimeMillis();
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            plugin.getThisServer();
             double tps = Math.min(plugin.getServer().getTPS()[0], 20.0);
             long lastHeartBeat = System.currentTimeMillis();
             int onlinePlayers = Bukkit.getOnlinePlayers().size();
@@ -42,10 +41,15 @@ public class ServerPinger {
             serverData.put("onlinePlayers", onlinePlayers);
             String serverDataJson = new Gson().toJson(serverData);
 
-            try (Jedis jedis = KKZones.pool.getResource()) {
+            Jedis jedis = null;
+            try {
+                jedis = KKZones.pool.getResource();
                 jedis.hset("servers", ServerSelectorGUI.currentServer, serverDataJson);
             } catch (Exception e) {
                 plugin.getLogger().severe("Could not save server data to Redis: " + e.getMessage());
+            } finally {
+                assert jedis != null;
+                jedis.close();
             }
         }, 20L, 20L);
     }
@@ -55,7 +59,21 @@ public class ServerPinger {
         for (Player players : Bukkit.getOnlinePlayers()) {
             if (players.getOpenInventory().getTitle().equals(
                     ChatColor.translateAlternateColorCodes('&', "&dServer Selector"))) {
-                players.sendMessage("test");
+                Jedis jedis = null;
+                try {
+                    jedis = KKZones.pool.getResource();
+                    players.sendMessage(jedis.hget("servers", ServerSelectorGUI.currentServer));
+                    /*
+                    int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
+                    int maxPlayers = Integer.parseInt(jedis.hget("server_statistics", "max_players"));
+
+                    players.sendMessage("Player Count: " + playerCount);
+                    players.sendMessage("Max Players: " + maxPlayers);
+
+                     */
+                } catch (Exception e) {
+                    players.sendMessage("errorr: " + e);
+                }
                 new ServerSelectorGUI(plugin, players).populateServerSlots();
             }
         }
