@@ -43,7 +43,7 @@ public class ServerPinger {
             Jedis jedis = null;
             try {
                 jedis = KKZones.pool.getResource();
-                jedis.hset("servers", ServerSelectorGUI.currentServer, serverDataJson);
+                jedis.hset("zones-servers", ServerSelectorGUI.currentServer, serverDataJson);
             } catch (Exception e) {
                 plugin.getLogger().severe("Could not save server data to Redis: " + e.getMessage());
             } finally {
@@ -61,7 +61,7 @@ public class ServerPinger {
                 Jedis jedis = null;
                 try {
                     jedis = KKZones.pool.getResource();
-                    players.sendMessage(jedis.hget("servers", ServerSelectorGUI.currentServer));
+                    players.sendMessage(jedis.hget("zones-servers", ServerSelectorGUI.currentServer));
                     /*
                     int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
                     int maxPlayers = Integer.parseInt(jedis.hget("server_statistics", "max_players"));
