@@ -69,7 +69,7 @@ public class ServerPinger {
                 jedis = KKZones.pool.getResource();
                 jedis.auth(plugin.getConfig().getString("redis.password"));
                 Map<String, String> servers = jedis.hgetAll("zones-servers");
-                ServerSelectorGUI.servers = servers;
+                new ServerSelectorGUI(plugin, players, servers);
                 jedis.close();
             } catch (Exception e) {
                 players.sendMessage("errorr: " + e);
