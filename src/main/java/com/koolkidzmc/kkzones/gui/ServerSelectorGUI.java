@@ -42,6 +42,11 @@ public class ServerSelectorGUI extends FastInv {
                 if (slot > 16) return;
                 JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                 String serverName = server.get("server").toString();
+                if (Long.parseLong(server.get("lastHeartBeat").toString()) != System.currentTimeMillis()) {
+                    populateOfflineServerSlot(slot, serverName);
+                    slot++;
+                    return;
+                }
                 Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
                 Double tps = Double.parseDouble(server.get("tps").toString());
 
@@ -54,7 +59,7 @@ public class ServerSelectorGUI extends FastInv {
                 minutes %= 60;
                 seconds %= 60;
                 String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
-                populateServerSlot(slot, serverName, onlinePlayers, tps, onlineTime);
+                populateOnlineServerSlot(slot, serverName, onlinePlayers, tps, onlineTime);
                 slot++;
             }
         } catch (ParseException e) {
@@ -64,7 +69,7 @@ public class ServerSelectorGUI extends FastInv {
         addNavigationButtons(player);
     }
 
-    private void populateServerSlot(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
+    private void populateOnlineServerSlot(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
         double tpsFixed = Math.round(tps * 100.0) / 100.0;
         setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
                 .name(ColorAPI.formatString("&a" + serverName))
@@ -87,6 +92,25 @@ public class ServerSelectorGUI extends FastInv {
             player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
         });
     }
+    private void populateOfflineServerSlot(Integer slot, String serverName) {
+        setItem(slot, new ItemBuilder(Material.REDSTONE_BLOCK)
+                .name(ColorAPI.formatString("&c" + serverName))
+                .addLore(ColorAPI.formatString("&fServer Offline!"))
+                .build(), e -> {
+            Player player = (Player) e.getWhoClicked();
+            SoundAPI.fail(player);
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+            try {
+                out.writeUTF("Connect");
+                out.writeUTF(serverName);
+            } catch (IOException ex) {
+                Bukkit.getLogger().severe("AAHHH");
+            }
+            player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
+        });
+    }
+
 
     private void fillBackground() {
         for (int i = 0; i < 9; i++) {
