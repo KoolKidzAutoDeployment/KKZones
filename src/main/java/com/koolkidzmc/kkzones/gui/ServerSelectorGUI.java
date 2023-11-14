@@ -49,29 +49,6 @@ public class ServerSelectorGUI extends FastInv {
                 .lore(ColorAPI.formatString("&8www.koolkidzmc.com"));
     }
 
-    public void populateServerSlots(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
-        double tpsFixed = Math.round(tps * 100.0) / 100.0;
-        setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
-                .name(ColorAPI.formatString("&a" + serverName))
-                .addLore(ColorAPI.formatString("&fClick to join &a" + onlinePlayers + " &fother players!"))
-                .addLore(" ")
-                .addLore(ColorAPI.formatString("&8Server Info"))
-                .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
-                .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
-                .build(), e -> {
-                    Player player = (Player) e.getWhoClicked();
-                    SoundAPI.success(player);
-                    ByteArrayOutputStream b = new ByteArrayOutputStream();
-                    DataOutputStream out = new DataOutputStream(b);
-                    try {
-                        out.writeUTF("Connect");
-                        out.writeUTF(serverName);
-                    } catch (IOException ex) {
-                        Bukkit.getLogger().severe("AAHHH");
-                    }
-                    player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
-        });
-    }
 
     private void addNavigationButtons(Player player) {
         setItem(18, new ItemBuilder(Material.BARRIER)
