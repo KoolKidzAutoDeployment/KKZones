@@ -26,13 +26,13 @@ public class BorderChecker {
             if (player.getLocation().getBlockX() >= 9997.00) {
                 player.sendMessage("Sending you to " + plugin.getConfig().getString("servers.east"));
             }
-            if (player.getLocation().getBlockX() >= -9997.00) {
+            if (player.getLocation().getBlockX() <= -9997.00) {
                 player.sendMessage("Sending you to " + plugin.getConfig().getString("servers.west"));
             }
             if (player.getLocation().getBlockZ() >= 9997.00) {
                 player.sendMessage("Sending you to " + plugin.getConfig().getString("servers.south"));
             }
-            if (player.getLocation().getBlockZ() >= 9997.00) {
+            if (player.getLocation().getBlockZ() <= -9997.00) {
                 player.sendMessage("Sending you to " + plugin.getConfig().getString("servers.north"));
             }
         }
