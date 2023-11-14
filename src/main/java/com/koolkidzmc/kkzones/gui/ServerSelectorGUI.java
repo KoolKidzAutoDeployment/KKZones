@@ -44,22 +44,21 @@ public class ServerSelectorGUI extends FastInv {
                 String serverName = server.get("server").toString();
                 if (Long.parseLong(server.get("lastHeartBeat").toString()) != System.currentTimeMillis()) {
                     populateOfflineServerSlot(slot, serverName);
-                    slot++;
-                    return;
-                }
-                Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
-                Double tps = Double.parseDouble(server.get("tps").toString());
+                } else {
+                    Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
+                    Double tps = Double.parseDouble(server.get("tps").toString());
 
-                long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
-                long seconds = miliOnline / 1000;
-                long minutes = seconds / 60;
-                long hours = minutes / 60;
-                long days = hours / 24;
-                hours %= 24;
-                minutes %= 60;
-                seconds %= 60;
-                String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
-                populateOnlineServerSlot(slot, serverName, onlinePlayers, tps, onlineTime);
+                    long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
+                    long seconds = miliOnline / 1000;
+                    long minutes = seconds / 60;
+                    long hours = minutes / 60;
+                    long days = hours / 24;
+                    hours %= 24;
+                    minutes %= 60;
+                    seconds %= 60;
+                    String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
+                    populateOnlineServerSlot(slot, serverName, onlinePlayers, tps, onlineTime);
+                }
                 slot++;
             }
         } catch (ParseException e) {
