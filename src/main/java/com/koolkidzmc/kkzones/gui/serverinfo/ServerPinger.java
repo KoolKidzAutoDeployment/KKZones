@@ -54,11 +54,9 @@ public class ServerPinger {
                 jedis = KKZones.pool.getResource();
                 jedis.auth(plugin.getConfig().getString("redis.password"));
                 jedis.hset("zones-servers", ServerSelectorGUI.currentServer, serverDataJson);
+                jedis.close();
             } catch (Exception e) {
                 plugin.getLogger().severe("Could not save server data to Redis: " + e.getMessage());
-            } finally {
-                assert jedis != null;
-                jedis.close();
             }
         }, 20L, 20L);
     }
@@ -88,6 +86,7 @@ public class ServerPinger {
                         seconds %= 60;
                         players.sendMessage("    Online For: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s");
                     }
+                    jedis.close();
                     /*
                     int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
                     int maxPlayers = Integer.parseInt(jedis.hget("server_statistics", "max_players"));
