@@ -7,9 +7,14 @@ import com.koolkidzmc.kkzones.utils.TaskManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.json.JSONString;
+import org.json.JSONStringer;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import redis.clients.jedis.Jedis;
 
+import java.time.Duration;
+import java.time.temporal.Temporal;
 import java.util.Map;
 
 public class ServerPinger {
@@ -67,7 +72,12 @@ public class ServerPinger {
                     jedis.auth(plugin.getConfig().getString("redis.password"));
                     Map<String, String> servers = jedis.hgetAll("zones-servers");
                     for (Map.Entry<String, String> entry : servers.entrySet()) {
-                        players.sendMessage(entry.getKey() + "/" + entry.getValue());
+                        JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
+                        players.sendMessage(server.get("server").toString() + ":");
+                        players.sendMessage("    " + server.get("onlinePlayers").toString() + "/100 Players");
+                        players.sendMessage("    " + server.get("tps").toString() + "/20.00 TPS");
+                        Duration timeElapsed = Duration.between((Temporal) server.get("startTime"),(Temporal) server.get("lastHeartBeat"));
+                        players.sendMessage("    " + timeElapsed + " online");
                     }
                     /*
                     int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
