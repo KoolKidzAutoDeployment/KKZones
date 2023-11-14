@@ -2,6 +2,7 @@ package com.koolkidzmc.kkzones.gui;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.JsonParseException;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.ColorAPI;
 import com.koolkidzmc.kkzones.utils.FastInv;
@@ -12,10 +13,15 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 public class ServerSelectorGUI extends FastInv {
@@ -24,12 +30,41 @@ public class ServerSelectorGUI extends FastInv {
     public static String currentServer;
 
 
-    public ServerSelectorGUI(KKZones plugin, Player player, Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
+    public ServerSelectorGUI(KKZones plugin, Player player, Map<String, String> servers) {
         super(27, ColorAPI.formatString("&dServer Selector"));
         this.plugin = plugin;
         this.cfg = plugin.getConfig();
 
         fillBackground();
+        try {
+            Integer slot = 10;
+            for (Map.Entry<String, String> entry : servers.entrySet()) {
+                if (slot > 16) return;
+                JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
+                String serverName = server.get("server").toString();
+                Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
+                Double tps = Double.parseDouble(server.get("tps").toString());
+
+                long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
+                long seconds = miliOnline / 1000;
+                long minutes = seconds / 60;
+                long hours = minutes / 60;
+                long days = hours / 24;
+                hours %= 24;
+                minutes %= 60;
+                seconds %= 60;
+                String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
+                populateServerSlot(slot, serverName, onlinePlayers, tps, onlineTime);
+                slot++;
+            }
+        } catch (ParseException e) {
+            Bukkit.getLogger().severe("Error: " + e);
+        }
+
+        addNavigationButtons(player);
+    }
+
+    private void populateServerSlot(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
         double tpsFixed = Math.round(tps * 100.0) / 100.0;
         setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
                 .name(ColorAPI.formatString("&a" + serverName))
@@ -39,6 +74,7 @@ public class ServerSelectorGUI extends FastInv {
                 .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
                 .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
                 .build(), e -> {
+            Player player = (Player) e.getWhoClicked();
             SoundAPI.success(player);
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             DataOutputStream out = new DataOutputStream(b);
@@ -50,7 +86,6 @@ public class ServerSelectorGUI extends FastInv {
             }
             player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
         });
-        addNavigationButtons(player);
     }
 
     private void fillBackground() {
