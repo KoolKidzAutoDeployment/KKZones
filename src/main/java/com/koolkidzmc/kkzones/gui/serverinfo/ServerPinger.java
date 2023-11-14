@@ -77,7 +77,7 @@ public class ServerPinger {
                         Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
                         Integer tps = Integer.parseInt(server.get("tps").toString());
 
-                        long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
+                        long miliOnline = Long.valueOf(server.get("lastHeartBeat").toString()) - Long.valueOf(server.get("startTime").toString());
                         long seconds = miliOnline / 1000;
                         long minutes = seconds / 60;
                         long hours = minutes / 60;
