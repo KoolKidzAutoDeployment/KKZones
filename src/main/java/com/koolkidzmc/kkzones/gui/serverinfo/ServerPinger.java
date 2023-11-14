@@ -14,6 +14,7 @@ import redis.clients.jedis.Jedis;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.temporal.Temporal;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -100,7 +101,7 @@ public class ServerPinger {
                      */
                 } catch (Exception e) {
                     players.sendMessage("errorr: " + e);
-                    Bukkit.getLogger().severe(e.getStackTrace().toString());
+                    Bukkit.getLogger().severe(Arrays.toString(e.getStackTrace()));
                 }
             }
         }
