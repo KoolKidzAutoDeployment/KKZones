@@ -30,7 +30,6 @@ public class ServerCommand implements CommandExecutor {
                 Map<String, String> servers = jedis.hgetAll("zones-servers");
                 Integer slot = 10;
                 for (Map.Entry<String, String> entry : servers.entrySet()) {
-                    if (slot > 16) return true;
                     JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                     String serverName = server.get("server").toString();
                     Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
