@@ -3,21 +3,14 @@ package com.koolkidzmc.kkzones.gui.serverinfo;
 import com.google.gson.Gson;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
-import com.koolkidzmc.kkzones.utils.ColorAPI;
-import com.koolkidzmc.kkzones.utils.ItemBuilder;
-import com.koolkidzmc.kkzones.utils.SoundAPI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import redis.clients.jedis.Jedis;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.temporal.Temporal;
@@ -93,7 +86,7 @@ public class ServerPinger {
                         minutes %= 60;
                         seconds %= 60;
                         String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
-                        populateServerSlots(slot, serverName, onlinePlayers, tps, onlineTime, players);
+                        new ServerSelectorGUI(plugin, players, slot, serverName, onlinePlayers, tps, onlineTime).open(players);
                         slot++;
                     }
                     jedis.close();
@@ -111,27 +104,4 @@ public class ServerPinger {
             }
         }
     };
-    public void populateServerSlots(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime, Player player) {
-        double tpsFixed = Math.round(tps * 100.0) / 100.0;
-        new ServerSelectorGUI(plugin, player).setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
-                .name(ColorAPI.formatString("&a" + serverName))
-                .addLore(ColorAPI.formatString("&fClick to join &a" + onlinePlayers + " &fother players!"))
-                .addLore(" ")
-                .addLore(ColorAPI.formatString("&8Server Info"))
-                .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
-                .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
-                .build(), e -> {
-            Player players = (Player) e.getWhoClicked();
-            SoundAPI.success(players);
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(b);
-            try {
-                out.writeUTF("Connect");
-                out.writeUTF(serverName);
-            } catch (IOException ex) {
-                Bukkit.getLogger().severe("AAHHH");
-            }
-            players.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
-        });
-    }
 }

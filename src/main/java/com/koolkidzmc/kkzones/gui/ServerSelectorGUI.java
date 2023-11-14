@@ -24,12 +24,32 @@ public class ServerSelectorGUI extends FastInv {
     public static String currentServer;
 
 
-    public ServerSelectorGUI(KKZones plugin, Player player) {
+    public ServerSelectorGUI(KKZones plugin, Player player, Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
         super(27, ColorAPI.formatString("&dServer Selector"));
         this.plugin = plugin;
         this.cfg = plugin.getConfig();
 
         fillBackground();
+        double tpsFixed = Math.round(tps * 100.0) / 100.0;
+        setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
+                .name(ColorAPI.formatString("&a" + serverName))
+                .addLore(ColorAPI.formatString("&fClick to join &a" + onlinePlayers + " &fother players!"))
+                .addLore(" ")
+                .addLore(ColorAPI.formatString("&8Server Info"))
+                .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
+                .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
+                .build(), e -> {
+            SoundAPI.success(player);
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+            try {
+                out.writeUTF("Connect");
+                out.writeUTF(serverName);
+            } catch (IOException ex) {
+                Bukkit.getLogger().severe("AAHHH");
+            }
+            player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
+        });
         addNavigationButtons(player);
     }
 
@@ -48,7 +68,6 @@ public class ServerSelectorGUI extends FastInv {
                 .name(" ")
                 .lore(ColorAPI.formatString("&8www.koolkidzmc.com"));
     }
-
 
     private void addNavigationButtons(Player player) {
         setItem(18, new ItemBuilder(Material.BARRIER)
