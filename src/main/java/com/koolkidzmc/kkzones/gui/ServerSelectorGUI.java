@@ -27,12 +27,14 @@ public class ServerSelectorGUI extends FastInv {
     private final FileConfiguration cfg;
     private final KKZones plugin;
     public static String currentServer;
+    public static Map<String, String> servers;
 
 
     public ServerSelectorGUI(KKZones plugin, Player player, Map<String, String> servers) {
         super(27, ColorAPI.formatString("&dServer Selector"));
         this.plugin = plugin;
         this.cfg = plugin.getConfig();
+        ServerSelectorGUI.servers = servers;
 
         fillBackground();
         try {
