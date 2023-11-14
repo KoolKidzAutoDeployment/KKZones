@@ -98,15 +98,7 @@ public class ServerSelectorGUI extends FastInv {
                 .build(), e -> {
             Player player = (Player) e.getWhoClicked();
             SoundAPI.fail(player);
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(b);
-            try {
-                out.writeUTF("Connect");
-                out.writeUTF(serverName);
-            } catch (IOException ex) {
-                Bukkit.getLogger().severe("AAHHH");
-            }
-            player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
+            player.sendMessage(ColorAPI.formatString("&cError connecting to server: " + serverName + " &cis offline!"));
         });
     }
 
@@ -126,7 +118,6 @@ public class ServerSelectorGUI extends FastInv {
                 .name(" ")
                 .lore(ColorAPI.formatString("&8www.koolkidzmc.com"));
     }
-
     private void addNavigationButtons(Player player) {
         setItem(18, new ItemBuilder(Material.BARRIER)
                 .flags(ItemFlag.HIDE_ATTRIBUTES)

@@ -3,6 +3,9 @@ prefix: "&d&lKKZones &8>>"
 # The name of the server running the plugin, as defined in the velocity/bungeecord config.
 server: ""
 
+# The slot for the server in /server (10-16)
+servercommand-slot: 10
+
 # What server the player will get teleported to depending on what worldborder they get to.
 servers:
   north: "survival-zone-01"
