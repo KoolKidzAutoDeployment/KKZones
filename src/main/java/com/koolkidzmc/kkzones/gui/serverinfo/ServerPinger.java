@@ -15,6 +15,9 @@ import redis.clients.jedis.Jedis;
 
 import java.util.Map;
 
+import static com.koolkidzmc.kkzones.gui.ServerSelectorGUI.servers;
+
+
 public class ServerPinger {
     private KKZones plugin;
     public void init(KKZones plugin) {
@@ -61,19 +64,20 @@ public class ServerPinger {
 
     Runnable pingServers = () -> {
         for (Player players : Bukkit.getOnlinePlayers()) {
+            Jedis jedis = null;
+            try {
+                jedis = KKZones.pool.getResource();
+                jedis.auth(plugin.getConfig().getString("redis.password"));
+                Map<String, String> servers = jedis.hgetAll("zones-servers");
+                ServerSelectorGUI.servers = servers;
+                jedis.close();
+            } catch (Exception e) {
+                players.sendMessage("errorr: " + e);
+                e.printStackTrace();
+            }
             if (players.getOpenInventory().getTitle().equals(
                     ChatColor.translateAlternateColorCodes('&', "&dServer Selector"))) {
-                Jedis jedis = null;
-                try {
-                    jedis = KKZones.pool.getResource();
-                    jedis.auth(plugin.getConfig().getString("redis.password"));
-                    Map<String, String> servers = jedis.hgetAll("zones-servers");
                     new ServerSelectorGUI(plugin, players, servers).open(players);
-                    jedis.close();
-                } catch (Exception e) {
-                    players.sendMessage("errorr: " + e);
-                    e.printStackTrace();
-                }
             }
         }
     };
