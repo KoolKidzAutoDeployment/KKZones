@@ -38,29 +38,28 @@ public class ServerSelectorGUI extends FastInv {
 
         fillBackground();
         try {
-            Integer slot = 10;
             for (Map.Entry<String, String> entry : servers.entrySet()) {
-                if (slot > 16) return;
                 JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                 String serverName = server.get("server").toString();
+                Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
+                Double tps = Double.parseDouble(server.get("tps").toString());
+                Integer slot = Integer.parseInt(server.get("slot").toString());
+                long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
+                long seconds = miliOnline / 1000;
+                long minutes = seconds / 60;
+                long hours = minutes / 60;
+                long days = hours / 24;
+                hours %= 24;
+                minutes %= 60;
+                seconds %= 60;
+                String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
                 if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {
                     populateOfflineServerSlot(slot, serverName);
+                } else if (serverName.equalsIgnoreCase(currentServer)) {
+                    populateCurrentServerSlot(slot, serverName, onlinePlayers, tps, onlineTime);
                 } else {
-                    Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
-                    Double tps = Double.parseDouble(server.get("tps").toString());
-
-                    long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
-                    long seconds = miliOnline / 1000;
-                    long minutes = seconds / 60;
-                    long hours = minutes / 60;
-                    long days = hours / 24;
-                    hours %= 24;
-                    minutes %= 60;
-                    seconds %= 60;
-                    String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
                     populateOnlineServerSlot(slot, serverName, onlinePlayers, tps, onlineTime);
                 }
-                slot++;
             }
         } catch (ParseException e) {
             Bukkit.getLogger().severe("Error: " + e);
