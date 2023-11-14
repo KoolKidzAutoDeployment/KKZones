@@ -63,9 +63,7 @@ public class ServerPinger {
                 try {
                     jedis = KKZones.pool.getResource();
                     jedis.auth(plugin.getConfig().getString("redis.password"));
-                    for (String str : jedis.mget("zones-servers")) {
-                        players.sendMessage(str);
-                    }
+                    players.sendMessage(jedis.hgetAll("zones-servers"));
                     /*
                     int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
                     int maxPlayers = Integer.parseInt(jedis.hget("server_statistics", "max_players"));
