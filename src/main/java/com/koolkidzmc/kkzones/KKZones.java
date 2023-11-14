@@ -5,9 +5,12 @@ import com.koolkidzmc.kkzones.commands.ServerCommand;
 import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
 import com.koolkidzmc.kkzones.gui.serverinfo.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.exceptions.JedisException;
 
 import java.util.logging.Logger;
 
@@ -18,18 +21,14 @@ public final class KKZones extends JavaPlugin {
     @Override
     public void onEnable() {
         console.info("Starting KKZones on the " + config.getString("server") + " server!");
+
         initConfig();
+
         ServerSelectorGUI.currentServer = config.getString("server");
         FastInvManager.register(this);
-        console.info("Starting Asynchronous Tasks...");
-        BorderChecker.init(this);
-        new ServerPinger().init(this);
-        console.info("Asynchronous Tasks Started!");
-        console.info("Starting Redis Pool...");
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        pool = new JedisPool(config.getString("redis.host"), config.getInt("redis.port"));
-        pool.setMaxTotal(35);
-        console.info("Redis Pool Started!");
+
+        startListeners();
+
         registerCommands();
     }
 
@@ -38,6 +37,9 @@ public final class KKZones extends JavaPlugin {
         pool.close();
         console.info("Stopping KKZones on the " + config.getString("server") + " server!");
     }
+
+
+
 
     private void initConfig() {
         console.info("Loading Config File...");
@@ -50,8 +52,36 @@ public final class KKZones extends JavaPlugin {
         }
     }
 
+    private void startListeners() {
+        console.info("Starting Listeners...");
+        console.info("Setting Outgoing Plugin Channel to [BungeeCord]...");
+        try {
+            getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+            console.info("Outgoing Plugin Channel Set!");
+        } catch (Exception e) {
+            console.severe("Error Setting Plugin Channel: " + e);
+        }
+
+        console.info("Starting & Connecting to Redis Pool...");
+        try {
+            pool = new JedisPool(config.getString("redis.host"), config.getInt("redis.port"));
+            pool.setMaxTotal(35);
+            console.info("Redis Connected Successfully!");
+        } catch (JedisException e)  {
+            console.severe("Error Starting Redis Pool: " + e);
+        }
+        console.info("Starting Asynchronous Tasks...");
+        try {
+            new BorderChecker().init(this);
+            new ServerPinger().init(this);
+        } catch (Exception e) {
+            console.severe("Error Starting Asynchronous Tasks: " + e);
+        }
+        console.info("Listeners Started!");
+    }
+
     private void registerCommands() {
         this.getCommand("server").setExecutor(new ServerCommand(this));
-
     }
+
 }

@@ -1,22 +1,19 @@
 package com.koolkidzmc.kkzones.gui.serverinfo;
 
-import com.google.gson.Gson;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import com.google.gson.Gson;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
 import redis.clients.jedis.Jedis;
 
-import java.sql.Time;
-import java.time.Duration;
-import java.time.temporal.Temporal;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class ServerPinger {
     private KKZones plugin;
