@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import redis.clients.jedis.Jedis;
 
+import java.util.Map;
+
 public class ServerPinger {
     private KKZones plugin;
     public void init(KKZones plugin) {
@@ -63,7 +65,10 @@ public class ServerPinger {
                 try {
                     jedis = KKZones.pool.getResource();
                     jedis.auth(plugin.getConfig().getString("redis.password"));
-                    players.sendMessage(jedis.hgetAll("zones-servers"));
+                    Map<String, String> servers = jedis.hgetAll("zones-servers");
+                    for (Map.Entry<String, String> entry : servers.entrySet()) {
+                        players.sendMessage(entry.getKey() + "/" + entry.getValue());
+                    }
                     /*
                     int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
                     int maxPlayers = Integer.parseInt(jedis.hget("server_statistics", "max_players"));
