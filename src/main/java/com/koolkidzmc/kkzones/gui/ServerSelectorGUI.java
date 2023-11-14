@@ -49,7 +49,7 @@ public class ServerSelectorGUI extends FastInv {
                 .lore(ColorAPI.formatString("&8www.koolkidzmc.com"));
     }
 
-    public void populateServerSlots(Integer slot, String serverName, Integer onlinePlayers, Integer tps, String onlineTime) {
+    public void populateServerSlots(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
         double tpsFixed = Math.round(tps * 100.0) / 100.0;
         setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
                 .name(ColorAPI.formatString("&a" + serverName))
