@@ -72,9 +72,10 @@ public class ServerSelectorGUI extends FastInv {
         double tpsFixed = Math.round(tps * 100.0) / 100.0;
         setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
                 .name(ColorAPI.formatString("&a" + serverName))
-                .addLore(ColorAPI.formatString("&fClick to join &a" + onlinePlayers + " &fother players!"))
+                .addLore(ColorAPI.formatString("&fClick to join!"))
                 .addLore(" ")
                 .addLore(ColorAPI.formatString("&8Server Info"))
+                .addLore(ColorAPI.formatString("&f&l| &fPlayers: &a" + onlinePlayers))
                 .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
                 .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
                 .build(), e -> {
@@ -94,11 +95,12 @@ public class ServerSelectorGUI extends FastInv {
 
     private void populateCurrentServerSlot(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
         double tpsFixed = Math.round(tps * 100.0) / 100.0;
-        setItem(slot, new ItemBuilder(Material.EMERALD)
+        setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
                 .name(ColorAPI.formatString("&a" + serverName))
-                .addLore(ColorAPI.formatString("&fClick to join &a" + onlinePlayers + " &fother players!"))
+                .addLore(ColorAPI.formatString("&fYou are connected to this server!"))
                 .addLore(" ")
                 .addLore(ColorAPI.formatString("&8Server Info"))
+                .addLore(ColorAPI.formatString("&f&l| &fPlayers: &a" + onlinePlayers))
                 .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
                 .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
                 .enchant(Enchantment.MENDING)
