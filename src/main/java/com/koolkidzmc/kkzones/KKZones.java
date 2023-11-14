@@ -26,6 +26,7 @@ public final class KKZones extends JavaPlugin {
         new ServerPinger().init(this);
         console.info("Asynchronous Tasks Started!");
         console.info("Starting Redis Pool...");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         pool = new JedisPool(config.getString("redis.host"), config.getInt("redis.port"));
         pool.setMaxTotal(35);
         console.info("Redis Pool Started!");

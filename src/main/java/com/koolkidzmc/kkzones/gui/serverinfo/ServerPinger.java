@@ -7,8 +7,6 @@ import com.koolkidzmc.kkzones.utils.TaskManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.json.JSONString;
-import org.json.JSONStringer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import redis.clients.jedis.Jedis;
@@ -71,11 +69,14 @@ public class ServerPinger {
                     jedis = KKZones.pool.getResource();
                     jedis.auth(plugin.getConfig().getString("redis.password"));
                     Map<String, String> servers = jedis.hgetAll("zones-servers");
+                    Integer slot = 10;
                     for (Map.Entry<String, String> entry : servers.entrySet()) {
+                        if (slot > 16) return;
                         JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
-                        players.sendMessage(server.get("server").toString() + ":");
-                        players.sendMessage("    " + server.get("onlinePlayers").toString() + "/100 Players");
-                        players.sendMessage("    " + server.get("tps").toString() + "/20 TPS");
+                        String serverName = server.get("server").toString();
+                        Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
+                        Integer tps = Integer.parseInt(server.get("tps").toString());
+
                         long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
                         long seconds = miliOnline / 1000;
                         long minutes = seconds / 60;
@@ -84,7 +85,9 @@ public class ServerPinger {
                         hours %= 24;
                         minutes %= 60;
                         seconds %= 60;
-                        players.sendMessage("    Online For: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s");
+                        String onlineTime = days + "&7d &f" + hours + "&7h &f" + minutes + "&7m &f" + seconds + "&7s &f";
+                        new ServerSelectorGUI(plugin, players).populateServerSlots(slot, serverName, onlinePlayers, tps, onlineTime);
+                        slot++;
                     }
                     jedis.close();
                     /*
@@ -98,7 +101,6 @@ public class ServerPinger {
                 } catch (Exception e) {
                     players.sendMessage("errorr: " + e);
                 }
-                new ServerSelectorGUI(plugin, players).populateServerSlots();
             }
         }
     };

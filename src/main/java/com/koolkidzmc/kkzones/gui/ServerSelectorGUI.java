@@ -1,14 +1,21 @@
 package com.koolkidzmc.kkzones.gui;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.ColorAPI;
 import com.koolkidzmc.kkzones.utils.FastInv;
 import com.koolkidzmc.kkzones.utils.ItemBuilder;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 
 public class ServerSelectorGUI extends FastInv {
@@ -23,7 +30,6 @@ public class ServerSelectorGUI extends FastInv {
         this.cfg = plugin.getConfig();
 
         fillBackground();
-        populateServerSlots();
         addNavigationButtons(player);
     }
 
@@ -43,8 +49,28 @@ public class ServerSelectorGUI extends FastInv {
                 .lore(ColorAPI.formatString("&8www.koolkidzmc.com"));
     }
 
-    public void populateServerSlots() {
-        //TODO: Get server stats and add it to gui.
+    public void populateServerSlots(Integer slot, String serverName, Integer onlinePlayers, Integer tps, String onlineTime) {
+        double tpsFixed = Math.round(tps * 100.0) / 100.0;
+        setItem(slot, new ItemBuilder(Material.EMERALD_BLOCK)
+                .name(ColorAPI.formatString("&a" + serverName))
+                .addLore(ColorAPI.formatString("&fClick to join &a" + onlinePlayers + " &fother players!"))
+                .addLore(" ")
+                .addLore(ColorAPI.formatString("&8Server Info"))
+                .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
+                .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
+                .build(), e -> {
+                    Player player = (Player) e.getWhoClicked();
+                    SoundAPI.success(player);
+                    ByteArrayOutputStream b = new ByteArrayOutputStream();
+                    DataOutputStream out = new DataOutputStream(b);
+                    try {
+                        out.writeUTF("Connect");
+                        out.writeUTF(serverName);
+                    } catch (IOException ex) {
+                        Bukkit.getLogger().severe("AAHHH");
+                    }
+                    player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
+        });
     }
 
     private void addNavigationButtons(Player player) {
