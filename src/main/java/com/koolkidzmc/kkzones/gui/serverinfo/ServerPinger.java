@@ -28,7 +28,7 @@ public class ServerPinger {
             plugin.getLogger().warning("Error while starting Asynchronous Task [startMonitoring]: " + e);
         }
         try {
-            TaskManager.Async.runTask(pingServers, 20L);
+            TaskManager.Sync.runTask(pingServers, 20L);
         } catch (Exception e) {
             plugin.getLogger().warning("Error while starting Asynchronous Task [pingServers]: " + e);
         }
