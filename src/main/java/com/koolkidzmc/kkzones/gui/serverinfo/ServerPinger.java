@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import redis.clients.jedis.Jedis;
 
+import java.sql.Time;
 import java.time.Duration;
 import java.time.temporal.Temporal;
 import java.util.Map;
@@ -78,10 +79,11 @@ public class ServerPinger {
                         players.sendMessage("    " + server.get("onlinePlayers").toString() + "/100 Players");
                         players.sendMessage("    " + server.get("tps").toString() + "/20 TPS");
                         long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
+                        long seconds= TimeUnit.SECONDS.toSeconds(miliOnline);
                         long minutes=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
                         long hours=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
                         long days=TimeUnit.MILLISECONDS.toDays(miliOnline);
-                        players.sendMessage("    " + days + "d" + hours + "h" + minutes + "m online");
+                        players.sendMessage("    Online For: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s");
                     }
                     /*
                     int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
