@@ -35,8 +35,8 @@ public final class KKZones extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        console.info("Stopping KKZones on the " + config.getString("server") + " server!");
         pool.close();
+        console.info("Stopping KKZones on the " + config.getString("server") + " server!");
     }
 
     private void initConfig() {

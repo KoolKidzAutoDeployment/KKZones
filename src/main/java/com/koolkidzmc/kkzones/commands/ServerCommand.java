@@ -3,6 +3,7 @@ package com.koolkidzmc.kkzones.commands;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -57,7 +58,8 @@ public class ServerCommand implements CommandExecutor {
 
                      */
             } catch (Exception e) {
-                player.sendMessage("errorr: " + e);
+                player.sendMessage("error: " + e);
+                Bukkit.getLogger().severe(e.getStackTrace().toString());
             }
             return true;
         }
