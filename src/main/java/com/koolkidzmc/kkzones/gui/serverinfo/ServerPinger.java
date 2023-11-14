@@ -77,7 +77,7 @@ public class ServerPinger {
                         players.sendMessage(server.get("server").toString() + ":");
                         players.sendMessage("    " + server.get("onlinePlayers").toString() + "/100 Players");
                         players.sendMessage("    " + server.get("tps").toString() + "/20 TPS");
-                        int miliOnline = Integer.parseInt(server.get("lastHeartBeat").toString()) - Integer.parseInt(server.get("startTime").toString());
+                        long miliOnline = Long.parseLong(server.get("lastHeartBeat").toString()) - Long.parseLong(server.get("startTime").toString());
                         long minutes=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
                         long hours=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
                         long days=TimeUnit.MILLISECONDS.toDays(miliOnline);
