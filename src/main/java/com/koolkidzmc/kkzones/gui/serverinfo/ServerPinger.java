@@ -76,8 +76,8 @@ public class ServerPinger {
                         JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                         players.sendMessage(server.get("server").toString() + ":");
                         players.sendMessage("    " + server.get("onlinePlayers").toString() + "/100 Players");
-                        players.sendMessage("    " + server.get("tps").toString() + "/20.00 TPS");
-                        int miliOnline = Integer.valueOf(server.get("lastHeartBeat").toString()) - Integer.valueOf(server.get("startTime").toString());
+                        players.sendMessage("    " + server.get("tps").toString() + "/20 TPS");
+                        int miliOnline = Integer.parseInt(server.get("lastHeartBeat").toString()) - Integer.parseInt(server.get("startTime").toString());
                         long minutes=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
                         long hours=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
                         long days=TimeUnit.MILLISECONDS.toDays(miliOnline);
