@@ -42,7 +42,7 @@ public class ServerSelectorGUI extends FastInv {
                 if (slot > 16) return;
                 JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                 String serverName = server.get("server").toString();
-                if (Long.parseLong(server.get("lastHeartBeat").toString()) != System.currentTimeMillis() + 80) {
+                if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {
                     populateOfflineServerSlot(slot, serverName);
                 } else {
                     Integer onlinePlayers = Integer.parseInt(server.get("onlinePlayers").toString());
