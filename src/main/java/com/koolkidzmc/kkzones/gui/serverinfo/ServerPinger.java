@@ -100,6 +100,7 @@ public class ServerPinger {
                      */
                 } catch (Exception e) {
                     players.sendMessage("errorr: " + e);
+                    Bukkit.getLogger().severe(e.getStackTrace().toString());
                 }
             }
         }
