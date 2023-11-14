@@ -16,6 +16,7 @@ import redis.clients.jedis.Jedis;
 import java.time.Duration;
 import java.time.temporal.Temporal;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ServerPinger {
     private KKZones plugin;
@@ -76,8 +77,11 @@ public class ServerPinger {
                         players.sendMessage(server.get("server").toString() + ":");
                         players.sendMessage("    " + server.get("onlinePlayers").toString() + "/100 Players");
                         players.sendMessage("    " + server.get("tps").toString() + "/20.00 TPS");
-                        Duration timeElapsed = Duration.between((Temporal) server.get("startTime"),(Temporal) server.get("lastHeartBeat"));
-                        players.sendMessage("    " + timeElapsed + " online");
+                        int miliOnline = Integer.valueOf(server.get("lastHeartBeat").toString()) - Integer.valueOf(server.get("startTime").toString());
+                        long minutes=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
+                        long hours=TimeUnit.MILLISECONDS.toMinutes(miliOnline);
+                        long days=TimeUnit.MILLISECONDS.toDays(miliOnline);
+                        players.sendMessage("    " + days + "d" + hours + "h" + minutes + "m online");
                     }
                     /*
                     int playerCount = Integer.parseInt(jedis.hget("servers", ServerSelectorGUI.currentServer));
