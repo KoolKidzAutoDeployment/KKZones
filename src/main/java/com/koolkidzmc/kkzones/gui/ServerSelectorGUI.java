@@ -11,6 +11,7 @@ import com.koolkidzmc.kkzones.utils.SoundAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.json.JSONException;
@@ -91,6 +92,24 @@ public class ServerSelectorGUI extends FastInv {
             player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
         });
     }
+
+    private void populateCurrentServerSlot(Integer slot, String serverName, Integer onlinePlayers, Double tps, String onlineTime) {
+        double tpsFixed = Math.round(tps * 100.0) / 100.0;
+        setItem(slot, new ItemBuilder(Material.EMERALD)
+                .name(ColorAPI.formatString("&a" + serverName))
+                .addLore(ColorAPI.formatString("&fClick to join &a" + onlinePlayers + " &fother players!"))
+                .addLore(" ")
+                .addLore(ColorAPI.formatString("&8Server Info"))
+                .addLore(ColorAPI.formatString("&f&l| &fTPS: &a" + tpsFixed))
+                .addLore(ColorAPI.formatString("&f&l| &fOnline For: &f" + onlineTime))
+                .enchant(Enchantment.MENDING)
+                .flags(ItemFlag.HIDE_ENCHANTS)
+                .build(), e -> {
+            Player player = (Player) e.getWhoClicked();
+            SoundAPI.fail(player);
+            player.sendMessage(ColorAPI.formatString("&cError connecting to server: You are already connected to " + serverName + "!"));
+        });
+    }
     private void populateOfflineServerSlot(Integer slot, String serverName) {
         setItem(slot, new ItemBuilder(Material.REDSTONE_BLOCK)
                 .name(ColorAPI.formatString("&c" + serverName))
@@ -101,6 +120,7 @@ public class ServerSelectorGUI extends FastInv {
             player.sendMessage(ColorAPI.formatString("&cError connecting to server: " + serverName + " &cis offline!"));
         });
     }
+
 
 
     private void fillBackground() {
