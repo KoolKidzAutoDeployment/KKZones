@@ -28,7 +28,7 @@ public class ServerPinger {
             plugin.getLogger().warning("Error while starting Asynchronous Task [startMonitoring]: " + e);
         }
         try {
-            TaskManager.Sync.runTask(pingServers, 80L);
+            TaskManager.Sync.runTask(pingServers, 20L);
         } catch (Exception e) {
             plugin.getLogger().warning("Error while starting Asynchronous Task [pingServers]: " + e);
         }
@@ -58,7 +58,7 @@ public class ServerPinger {
             } catch (Exception e) {
                 plugin.getLogger().severe("Could not save server data to Redis: " + e.getMessage());
             }
-        }, 20L, 80L);
+        }, 20L, 20L);
     }
 
 
