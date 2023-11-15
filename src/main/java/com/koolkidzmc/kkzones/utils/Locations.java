@@ -2,7 +2,7 @@ package com.koolkidzmc.kkzones.utils;
 
 import com.google.gson.Gson;
 import com.koolkidzmc.kkzones.KKZones;
-import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
