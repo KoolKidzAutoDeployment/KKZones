@@ -27,6 +27,7 @@ public class Locations {
             Jedis jedis = KKZones.pool.getResource();
             jedis.auth(plugin.getConfig().getString("redis.password"));
             jedis.set(getTeleportationToLocationKey(player), locationToString(location));
+            jedis.close();
         } catch (Exception e) {
             plugin.getLogger().severe("Could not store teleportation data in redis " + e.getMessage());
         }
@@ -81,6 +82,7 @@ public class Locations {
             jedis = KKZones.pool.getResource();
             jedis.auth(plugin.getConfig().getString("redis.password"));
             toLocation = jedis.get(getTeleportationToLocationKey(player));
+            jedis.close();
         } catch (Exception e) {
             plugin.getLogger().severe("Could not retrieve teleportation data from Redis: " + e.getMessage());
         }
@@ -93,6 +95,7 @@ public class Locations {
             jedis = KKZones.pool.getResource();
             jedis.auth(plugin.getConfig().getString("redis.password"));
             jedis.del(key);
+            jedis.close();
         } catch (Exception e) {
             plugin.getLogger().severe("Could not delete teleportation data from Redis: " + e.getMessage());
         }
