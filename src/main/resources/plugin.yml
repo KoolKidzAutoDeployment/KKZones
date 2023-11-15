@@ -2,19 +2,3 @@ name: KKZones
 version: '${version}'
 main: com.koolkidzmc.kkzones.KKZones
 api-version: '1.18'
-
-permissions:
-  kkzones.server:
-    description: Open the server selector gui
-    default: true
-
-commands:
-  server:
-    description: 'server menu'
-    usage: '/serverlist'
-    aliases:
-      - server
-      - serverlist
-      - servers
-    permission: kkzones.server
-    permission-message: '&cYou are not allowed to use that command!'
