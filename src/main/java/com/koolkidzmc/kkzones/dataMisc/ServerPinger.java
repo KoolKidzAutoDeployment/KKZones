@@ -1,11 +1,9 @@
 package com.koolkidzmc.kkzones.dataMisc;
 
 import com.koolkidzmc.kkzones.KKZones;
-import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.google.gson.Gson;
@@ -14,8 +12,6 @@ import org.json.simple.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import java.util.Map;
-
-import static com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI.servers;
 
 public class ServerPinger {
     private KKZones plugin;

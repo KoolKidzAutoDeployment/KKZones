@@ -5,7 +5,6 @@ import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.Locations;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
