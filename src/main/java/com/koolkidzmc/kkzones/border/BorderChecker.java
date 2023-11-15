@@ -104,6 +104,7 @@ public class BorderChecker {
 
     private static void sendToOnlineServer(String serverName, Player player) {
         SoundAPI.success(player);
+        player.setVelocity(player.getLocation().getDirection().multiply(-1));
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         String loc = player.getLocation().toString();
@@ -121,6 +122,9 @@ public class BorderChecker {
         } catch (Exception e) {
             plugin.getLogger().severe("Could not save player transfer data to Redis: " + e.getMessage());
         }
+        player.sendMessage("Sending To Server: " + serverName);
+        player.sendMessage(playerDataJson);
+        /*
         try {
             out.writeUTF("Connect");
             out.writeUTF(serverName);
@@ -128,6 +132,8 @@ public class BorderChecker {
             Bukkit.getLogger().severe("AAHHH");
         }
         player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
+
+         */
     }
 
     private static void sendToCurrentServer(String serverName, Player player) {

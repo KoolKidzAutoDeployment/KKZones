@@ -22,6 +22,7 @@ public class OnJoin implements Listener {
             jedis = KKZones.pool.getResource();
             jedis.auth(plugin.getConfig().getString("redis.password"));
             JSONObject transferPacket = (JSONObject) new JSONParser().parse(jedis.hget("zones-transfers", e.getPlayer().getUniqueId().toString()));
+            e.getPlayer().sendMessage(jedis.hgetAll("zones-transfers").toString());
             e.getPlayer().sendMessage(jedis.hget("zones-transfers", e.getPlayer().getUniqueId().toString()));
             jedis.close();
         } catch (Exception ex) {
