@@ -10,9 +10,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
 
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-
 public class Locations {
 
     KKZones plugin = KKZones.getPlugin(KKZones.class);
@@ -26,7 +23,9 @@ public class Locations {
         }
 
         // Adding location to redis
-        try (Jedis jedis = KKZones.pool.getResource()) {
+        try {
+            Jedis jedis = KKZones.pool.getResource();
+            jedis.auth(plugin.getConfig().getString("redis.password"));
             jedis.set(getTeleportationToLocationKey(player), locationToString(location));
         } catch (Exception e) {
             plugin.getLogger().severe("Could not store teleportation data in redis " + e.getMessage());
@@ -35,7 +34,7 @@ public class Locations {
         new Messenger().connect(player, server);
     }
 
-    private String getTeleportationToLocationKey(Player player) {
+    public String getTeleportationToLocationKey(Player player) {
         return "teleportation:location:" + player.getName();
     }
 
@@ -80,6 +79,7 @@ public class Locations {
         String toLocation = "";
         try {
             jedis = KKZones.pool.getResource();
+            jedis.auth(plugin.getConfig().getString("redis.password"));
             toLocation = jedis.get(getTeleportationToLocationKey(player));
         } catch (Exception e) {
             plugin.getLogger().severe("Could not retrieve teleportation data from Redis: " + e.getMessage());
@@ -88,7 +88,10 @@ public class Locations {
     }
 
     public void clearTeleportKeyFromRedis(String key) {
-        try (Jedis jedis = KKZones.pool.getResource()) {
+        Jedis jedis = null;
+        try {
+            jedis = KKZones.pool.getResource();
+            jedis.auth(plugin.getConfig().getString("redis.password"));
             jedis.del(key);
         } catch (Exception e) {
             plugin.getLogger().severe("Could not delete teleportation data from Redis: " + e.getMessage());

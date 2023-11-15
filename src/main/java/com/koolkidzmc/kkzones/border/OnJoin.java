@@ -23,10 +23,9 @@ public class OnJoin implements Listener {
             String locStr = new Locations().getPlayerToLocation(e.getPlayer());
             Location loc = Locations.fromLocationString(locStr);
 
-            World world = e.getPlayer().getWorld();
-            int highY = world.getHighestBlockYAt(loc);
-            loc.setY(highY);
+            loc.setY(loc.getWorld().getHighestBlockYAt(loc) + 2);
             e.getPlayer().teleport(loc);
+            new Locations().clearTeleportKeyFromRedis(new Locations().getTeleportationToLocationKey(e.getPlayer()));
         } catch (Exception ex) {
             Bukkit.getLogger().severe("AHHHHHHHHHHHHHHHHHHHHHHHHHH: " + ex);
         }
