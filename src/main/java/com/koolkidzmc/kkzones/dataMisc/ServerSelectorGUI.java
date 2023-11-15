@@ -23,15 +23,14 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-public class ServerSelectorGUI extends FastInv {
+public class ServerSelectorGUI {
     private final FileConfiguration cfg;
     private final KKZones plugin;
     public static String currentServer;
     public static Map<String, String> servers;
 
 
-    public ServerSelectorGUI(KKZones plugin, Player player, Map<String, String> servers) {
-        super(27, ColorAPI.formatString("&dServer Selector"));
+    public ServerSelectorGUI(KKZones plugin, Map<String, String> servers) {
         this.plugin = plugin;
         this.cfg = plugin.getConfig();
         ServerSelectorGUI.servers = servers;

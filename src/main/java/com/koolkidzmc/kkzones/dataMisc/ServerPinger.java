@@ -68,15 +68,11 @@ public class ServerPinger {
                 jedis = KKZones.pool.getResource();
                 jedis.auth(plugin.getConfig().getString("redis.password"));
                 Map<String, String> servers = jedis.hgetAll("zones-servers");
-                new ServerSelectorGUI(plugin, players, servers);
+                new ServerSelectorGUI(plugin, servers);
                 jedis.close();
             } catch (Exception e) {
                 players.sendMessage("errorr: " + e);
                 e.printStackTrace();
-            }
-            if (players.getOpenInventory().getTitle().equals(
-                    ChatColor.translateAlternateColorCodes('&', "&dServer Selector"))) {
-                    new ServerSelectorGUI(plugin, players, servers).open(players);
             }
         }
     };

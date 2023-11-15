@@ -1,17 +1,15 @@
 package com.koolkidzmc.kkzones.border;
 
-import com.google.gson.Gson;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.ColorAPI;
 import com.koolkidzmc.kkzones.utils.Locations;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
-import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
