@@ -1,7 +1,7 @@
-package com.koolkidzmc.kkzones.gui.serverinfo;
+package com.koolkidzmc.kkzones.dataMisc;
 
 import com.koolkidzmc.kkzones.KKZones;
-import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
 
 import org.bukkit.Bukkit;
@@ -15,8 +15,7 @@ import redis.clients.jedis.Jedis;
 
 import java.util.Map;
 
-import static com.koolkidzmc.kkzones.gui.ServerSelectorGUI.servers;
-
+import static com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI.servers;
 
 public class ServerPinger {
     private KKZones plugin;

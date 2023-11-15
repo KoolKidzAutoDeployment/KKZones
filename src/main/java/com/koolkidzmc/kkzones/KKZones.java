@@ -2,9 +2,8 @@ package com.koolkidzmc.kkzones;
 
 import com.koolkidzmc.kkzones.border.BorderChecker;
 import com.koolkidzmc.kkzones.border.OnJoin;
-import com.koolkidzmc.kkzones.commands.ServerCommand;
-import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
-import com.koolkidzmc.kkzones.gui.serverinfo.ServerPinger;
+import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.dataMisc.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,8 +28,6 @@ public final class KKZones extends JavaPlugin {
         FastInvManager.register(this);
 
         startListeners();
-
-        registerCommands();
     }
 
     @Override
@@ -78,10 +75,6 @@ public final class KKZones extends JavaPlugin {
             console.severe("Error Starting Asynchronous Tasks: " + e);
         }
         console.info("Listeners Started!");
-    }
-
-    private void registerCommands() {
-        this.getCommand("server").setExecutor(new ServerCommand(this));
     }
 
 }
