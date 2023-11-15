@@ -1,9 +1,8 @@
 package com.koolkidzmc.kkzones.border;
 
-
-import com.google.gson.JsonParser;
 import com.koolkidzmc.kkzones.KKZones;
 
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.json.JSONObject;
@@ -11,11 +10,13 @@ import org.json.simple.parser.JSONParser;
 import redis.clients.jedis.Jedis;
 
 
+
 public class OnJoin implements Listener {
     private final KKZones plugin;
     public OnJoin(KKZones plugin) {
         this.plugin = plugin;
     }
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Jedis jedis = null;
         try {
@@ -30,4 +31,5 @@ public class OnJoin implements Listener {
             ex.printStackTrace();
         }
     }
+
 }
