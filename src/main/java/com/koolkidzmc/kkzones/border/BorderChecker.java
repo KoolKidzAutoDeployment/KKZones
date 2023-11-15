@@ -3,6 +3,7 @@ package com.koolkidzmc.kkzones.border;
 import com.google.gson.Gson;
 import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.ColorAPI;
+import com.koolkidzmc.kkzones.utils.Locations;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
 import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
@@ -10,14 +11,11 @@ import com.koolkidzmc.kkzones.gui.ServerSelectorGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import redis.clients.jedis.Jedis;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Map;
 
 public class BorderChecker {
@@ -44,7 +42,7 @@ public class BorderChecker {
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
                             else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
-                            else {sendToOnlineServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "east");}
                         }
                     }
                 } catch (ParseException e) {
@@ -60,7 +58,7 @@ public class BorderChecker {
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
                             else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
-                            else {sendToOnlineServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "west");}
                         }
                     }
                 } catch (ParseException e) {
@@ -76,7 +74,7 @@ public class BorderChecker {
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
                             else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
-                            else {sendToOnlineServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "south");}
                         }
                     }
                 } catch (ParseException e) {
@@ -92,7 +90,7 @@ public class BorderChecker {
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
                             else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
-                            else {sendToOnlineServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "north");}
                         }
                     }
                 } catch (ParseException e) {
@@ -102,38 +100,18 @@ public class BorderChecker {
         }
     };
 
-    private static void sendToOnlineServer(String serverName, Player player) {
+    private static void sendToOnlineServer(String serverName, Player player, String border) {
         SoundAPI.success(player);
         player.setVelocity(player.getLocation().getDirection().multiply(-1));
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        String loc = player.getLocation().toString();
-        JSONObject playerData = new JSONObject();
-        playerData.put("player", player.getUniqueId().toString());
-        playerData.put("fromServer", ServerSelectorGUI.currentServer);
-        playerData.put("fromLoc", loc);
-        String playerDataJson = new Gson().toJson(playerData);
-        Jedis jedis = null;
-        try {
-            jedis = KKZones.pool.getResource();
-            jedis.auth(plugin.getConfig().getString("redis.password"));
-            jedis.hset("zones-transfers", player.getUniqueId().toString(), playerDataJson);
-            jedis.close();
-        } catch (Exception e) {
-            plugin.getLogger().severe("Could not save player transfer data to Redis: " + e.getMessage());
-        }
+        Location loc = player.getLocation();
         player.sendMessage("Sending To Server: " + serverName);
-        player.sendMessage(playerDataJson);
-        /*
-        try {
-            out.writeUTF("Connect");
-            out.writeUTF(serverName);
-        } catch (IOException ex) {
-            Bukkit.getLogger().severe("AAHHH");
-        }
-        player.sendPluginMessage(KKZones.getPlugin(KKZones.class), "BungeeCord", b.toByteArray());
 
-         */
+        if (border.equalsIgnoreCase("east")) loc.setX(-9995.00);
+        if (border.equalsIgnoreCase("west")) loc.setX(9995.00);
+        if (border.equalsIgnoreCase("north")) loc.setZ(9995.00);
+        if (border.equalsIgnoreCase("south")) loc.setZ(-9995.00);
+
+        new Locations().teleport(player, serverName, loc);
     }
 
     private static void sendToCurrentServer(String serverName, Player player) {

@@ -39,9 +39,6 @@ public final class KKZones extends JavaPlugin {
         console.info("Stopping KKZones on the " + config.getString("server") + " server!");
     }
 
-
-
-
     private void initConfig() {
         console.info("Loading Config File...");
         try {
