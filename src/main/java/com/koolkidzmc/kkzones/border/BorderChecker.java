@@ -22,7 +22,7 @@ public class BorderChecker {
     static KKZones plugin;
     public void init(KKZones plugin) {
         BorderChecker.plugin = plugin;
-        plugin.getLogger().info("Setting Messsage Channels...");
+        plugin.getLogger().info("Setting Message Channels...");
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         try {
             TaskManager.Async.runTask(checkLoc, 5);

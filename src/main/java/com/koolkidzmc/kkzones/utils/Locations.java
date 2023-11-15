@@ -75,20 +75,16 @@ public class Locations {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
-    public CompletableFuture<String> getPlayerToLocation(Player player) {
-        CompletableFuture<String> future = new CompletableFuture<>();
-
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try (Jedis jedis = KKZones.pool.getResource()) {
-                String toLocation = jedis.get(getTeleportationToLocationKey(player));
-                future.complete(toLocation);
-            } catch (Exception e) {
-                plugin.getLogger().severe("Could not retrieve teleportation data from Redis: " + e.getMessage());
-                future.completeExceptionally(e);
-            }
-        });
-
-        return future;
+    public String getPlayerToLocation(Player player) {
+        Jedis jedis = null;
+        String toLocation = "";
+        try {
+            jedis = KKZones.pool.getResource();
+            toLocation = jedis.get(getTeleportationToLocationKey(player));
+        } catch (Exception e) {
+            plugin.getLogger().severe("Could not retrieve teleportation data from Redis: " + e.getMessage());
+        }
+        return toLocation;
     }
 
     public void clearTeleportKeyFromRedis(String key) {

@@ -20,7 +20,7 @@ public class OnJoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         try {
-            String locStr = new Locations().getPlayerToLocation(e.getPlayer()).get();
+            String locStr = new Locations().getPlayerToLocation(e.getPlayer());
             Location loc = Locations.fromLocationString(locStr);
 
             World world = e.getPlayer().getWorld();
