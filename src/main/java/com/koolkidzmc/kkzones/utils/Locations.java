@@ -2,7 +2,7 @@ package com.koolkidzmc.kkzones.utils;
 
 import com.google.gson.Gson;
 import com.koolkidzmc.kkzones.KKZones;
-import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.dataMisc.ServerStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,7 +17,7 @@ public class Locations {
 
     public void teleport(@NotNull Player player, @NotNull String server, Location location) {
         // If current instance, just tp to location directly
-        if (ServerSelectorGUI.currentServer.equalsIgnoreCase(server)) {
+        if (ServerStorage.currentServer.equalsIgnoreCase(server)) {
             player.teleport(location);
             return;
         }

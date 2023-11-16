@@ -2,7 +2,7 @@ package com.koolkidzmc.kkzones;
 
 import com.koolkidzmc.kkzones.border.BorderChecker;
 import com.koolkidzmc.kkzones.border.OnJoin;
-import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.dataMisc.ServerStorage;
 import com.koolkidzmc.kkzones.dataMisc.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
 
@@ -24,7 +24,7 @@ public final class KKZones extends JavaPlugin {
 
         initConfig();
 
-        ServerSelectorGUI.currentServer = config.getString("server");
+        ServerStorage.currentServer = config.getString("server");
         FastInvManager.register(this);
 
         startListeners();

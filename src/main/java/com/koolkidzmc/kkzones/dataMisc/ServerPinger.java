@@ -32,23 +32,17 @@ public class ServerPinger {
         long startTime = System.currentTimeMillis();
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            double tps = Math.min(plugin.getServer().getTPS()[0], 20.0);
             long lastHeartBeat = System.currentTimeMillis();
-            int onlinePlayers = Bukkit.getOnlinePlayers().size();
             JSONObject serverData = new JSONObject();
-            serverData.put("server", ServerSelectorGUI.currentServer);
-            serverData.put("slot", plugin.getConfig().getInt("servercommand-slot"));
-            serverData.put("tps", tps);
-            serverData.put("startTime", startTime);
+            serverData.put("server", ServerStorage.currentServer);
             serverData.put("lastHeartBeat", lastHeartBeat);
-            serverData.put("onlinePlayers", onlinePlayers);
             String serverDataJson = new Gson().toJson(serverData);
 
             Jedis jedis = null;
             try {
                 jedis = KKZones.pool.getResource();
                 jedis.auth(plugin.getConfig().getString("redis.password"));
-                jedis.hset("zones-servers", ServerSelectorGUI.currentServer, serverDataJson);
+                jedis.hset("zones-heartbeat", ServerStorage.currentServer, serverDataJson);
                 jedis.close();
             } catch (Exception e) {
                 plugin.getLogger().severe("Could not save server data to Redis: " + e.getMessage());
@@ -63,8 +57,8 @@ public class ServerPinger {
             try {
                 jedis = KKZones.pool.getResource();
                 jedis.auth(plugin.getConfig().getString("redis.password"));
-                Map<String, String> servers = jedis.hgetAll("zones-servers");
-                new ServerSelectorGUI(plugin, servers);
+                Map<String, String> servers = jedis.hgetAll("zones-heartbeat");
+                new ServerStorage(plugin, servers);
                 jedis.close();
             } catch (Exception e) {
                 players.sendMessage("errorr: " + e);

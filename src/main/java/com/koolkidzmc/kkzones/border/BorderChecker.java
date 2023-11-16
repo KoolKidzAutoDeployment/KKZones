@@ -5,7 +5,7 @@ import com.koolkidzmc.kkzones.utils.ColorAPI;
 import com.koolkidzmc.kkzones.utils.Locations;
 import com.koolkidzmc.kkzones.utils.SoundAPI;
 import com.koolkidzmc.kkzones.utils.TaskManager;
-import com.koolkidzmc.kkzones.dataMisc.ServerSelectorGUI;
+import com.koolkidzmc.kkzones.dataMisc.ServerStorage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,13 +33,13 @@ public class BorderChecker {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getLocation().getBlockX() >= 9997.00) {
                 try {
-                    for (Map.Entry<String, String> entry : ServerSelectorGUI.servers.entrySet()) {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
                         JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                         if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.east"))) {
                             String serverName = server.get("server").toString();
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
-                            else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
                             else {sendToOnlineServer(serverName, player, "east");}
                         }
                     }
@@ -49,13 +49,13 @@ public class BorderChecker {
             }
             if (player.getLocation().getBlockX() <= -9997.00) {
                 try {
-                    for (Map.Entry<String, String> entry : ServerSelectorGUI.servers.entrySet()) {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
                         JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                         if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.west"))) {
                             String serverName = server.get("server").toString();
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
-                            else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
                             else {sendToOnlineServer(serverName, player, "west");}
                         }
                     }
@@ -65,13 +65,13 @@ public class BorderChecker {
             }
             if (player.getLocation().getBlockZ() >= 9997.00) {
                 try {
-                    for (Map.Entry<String, String> entry : ServerSelectorGUI.servers.entrySet()) {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
                         JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                         if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.south"))) {
                             String serverName = server.get("server").toString();
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
-                            else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
                             else {sendToOnlineServer(serverName, player, "south");}
                         }
                     }
@@ -81,13 +81,13 @@ public class BorderChecker {
             }
             if (player.getLocation().getBlockZ() <= -9997.00) {
                 try {
-                    for (Map.Entry<String, String> entry : ServerSelectorGUI.servers.entrySet()) {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
                         JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
                         if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.north"))) {
                             String serverName = server.get("server").toString();
 
                             if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
-                            else if (serverName.equalsIgnoreCase(ServerSelectorGUI.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
                             else {sendToOnlineServer(serverName, player, "north");}
                         }
                     }
