@@ -22,14 +22,99 @@ public class BorderChecker {
         BorderChecker.plugin = plugin;
         plugin.getLogger().info("Setting Message Channels...");
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-        try {
-            TaskManager.Async.runTask(checkLoc, 5);
-        } catch (Exception e) {
-            plugin.getLogger().warning("Error while starting Asynchronous Task [checkLoc]: " + e);
+        if (plugin.getConfig().getBoolean("spawn")) {
+            try {
+                TaskManager.Async.runTask(checkLocSpawn, 5);
+            } catch (Exception e) {
+                plugin.getLogger().warning("Error while starting Asynchronous Task [checkLocSpawn]: " + e);
+            }
+        } else {
+            try {
+                TaskManager.Async.runTask(checkLocZones, 5);
+            } catch (Exception e) {
+                plugin.getLogger().warning("Error while starting Asynchronous Task [checkLocZones]: " + e);
+            }
         }
     }
 
-    static Runnable checkLoc = () -> {
+    static Runnable checkLocSpawn = () -> {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            double size = player.getWorldBorder().getSize();
+            double centerX = player.getWorldBorder().getCenter().getX();
+            double centerZ = player.getWorldBorder().getCenter().getZ();
+            double north = centerZ - size;
+            double south = centerZ + size;
+            double east = centerX + size;
+            double west = centerX - size;
+            if (player.getLocation().getBlockX() >= east) {
+                try {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
+                        JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
+                        if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.east"))) {
+                            String serverName = server.get("server").toString();
+
+                            if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "east");}
+                        }
+                    }
+                } catch (ParseException e) {
+                    Bukkit.getLogger().severe("Error: " + e);
+                }
+            }
+            if (player.getLocation().getBlockX() <= west) {
+                try {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
+                        JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
+                        if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.west"))) {
+                            String serverName = server.get("server").toString();
+
+                            if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "west");}
+                        }
+                    }
+                } catch (ParseException e) {
+                    Bukkit.getLogger().severe("Error: " + e);
+                }
+            }
+            if (player.getLocation().getBlockZ() >= south) {
+                try {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
+                        JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
+                        if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.south"))) {
+                            String serverName = server.get("server").toString();
+
+                            if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "south");}
+                        }
+                    }
+                } catch (ParseException e) {
+                    Bukkit.getLogger().severe("Error: " + e);
+                }
+            }
+            if (player.getLocation().getBlockZ() <= north) {
+                try {
+                    for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
+                        JSONObject server = (JSONObject) new JSONParser().parse(entry.getValue());
+                        if (server.get("server").toString().equalsIgnoreCase(plugin.getConfig().getString("servers.north"))) {
+                            String serverName = server.get("server").toString();
+
+                            if (Long.parseLong(server.get("lastHeartBeat").toString()) < System.currentTimeMillis() - 4000) {sendToOfflineServer(serverName, player);}
+                            else if (serverName.equalsIgnoreCase(ServerStorage.currentServer)) {sendToCurrentServer(serverName, player);}
+                            else {sendToOnlineServer(serverName, player, "north");}
+                        }
+                    }
+                } catch (ParseException e) {
+                    Bukkit.getLogger().severe("Error: " + e);
+                }
+            }
+        }
+    };
+
+
+    static Runnable checkLocZones = () -> {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getLocation().getBlockX() >= 9997.00) {
                 try {
