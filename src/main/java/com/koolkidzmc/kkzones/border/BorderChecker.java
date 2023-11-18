@@ -40,12 +40,19 @@ public class BorderChecker {
     static Runnable checkLocSpawn = () -> {
         for (Player player : Bukkit.getOnlinePlayers()) {
             double size = (player.getWorldBorder().getSize()/2)-3;
+            player.sendMessage((String.valueOf(size)));
             double centerX = player.getWorldBorder().getCenter().getX();
+            player.sendMessage((String.valueOf(centerX)));
             double centerZ = player.getWorldBorder().getCenter().getZ();
+            player.sendMessage((String.valueOf(centerZ)));
             double north = centerZ - size;
+            player.sendMessage((String.valueOf(north)));
             double south = centerZ + size;
+            player.sendMessage((String.valueOf(south)));
             double east = centerX + size;
+            player.sendMessage((String.valueOf(east)));
             double west = centerX - size;
+            player.sendMessage((String.valueOf(west)));
             if (player.getLocation().getBlockX() >= east) {
                 try {
                     for (Map.Entry<String, String> entry : ServerStorage.servers.entrySet()) {
