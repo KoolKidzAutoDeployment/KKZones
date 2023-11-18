@@ -20,7 +20,7 @@ public class OnJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         try {
             if (plugin.getConfig().getBoolean("spawn")) {
-                Location loc = new Location(e.getPlayer().getWorld(), 230, 100, -140);
+                Location loc = new Location(e.getPlayer().getWorld(), plugin.getConfig().getDouble("x"), plugin.getConfig().getDouble("y"), plugin.getConfig().getDouble("z"));
                 e.getPlayer().teleport(loc);
                 new Locations().clearTeleportKeyFromRedis(new Locations().getTeleportationToLocationKey(e.getPlayer()));
             }

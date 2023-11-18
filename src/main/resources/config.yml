@@ -5,6 +5,10 @@ server: ""
 
 # If this server is the spawn
 spawn: false
+# Spawn location, only set if this config is on the spawn server
+x: 221.50
+y: 140
+z: -63.5
 
 # What server the player will get teleported to depending on what worldborder they get to.
 servers:
