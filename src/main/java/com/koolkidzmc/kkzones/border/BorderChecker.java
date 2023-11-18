@@ -39,7 +39,7 @@ public class BorderChecker {
 
     static Runnable checkLocSpawn = () -> {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            double size = (player.getWorld().getWorldBorder().getSize()/2)-3;
+            double size = (player.getWorld().getWorldBorder().getSize())-3;
             double centerX = player.getWorld().getWorldBorder().getCenter().getX();
             double centerZ = player.getWorld().getWorldBorder().getCenter().getZ();
             double north = centerZ - size;
