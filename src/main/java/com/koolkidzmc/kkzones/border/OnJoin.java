@@ -5,6 +5,7 @@ import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.Locations;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +22,7 @@ public class OnJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         try {
             if (plugin.getConfig().getBoolean("spawn")) {
-                Location loc = new Location(Bukkit.getWorld("overworld"), plugin.getConfig().getDouble("x"), plugin.getConfig().getDouble("y"), plugin.getConfig().getDouble("z"));
+                Location loc = new Location(Bukkit.getWorld(new NamespacedKey("minecraft", "overworld")), plugin.getConfig().getDouble("x"), plugin.getConfig().getDouble("y"), plugin.getConfig().getDouble("z"));
                 loc.setYaw((float) plugin.getConfig().getDouble("yaw"));
                 e.getPlayer().teleport(loc);
                 new Locations().clearTeleportKeyFromRedis(new Locations().getTeleportationToLocationKey(e.getPlayer()));
@@ -34,7 +35,7 @@ public class OnJoin implements Listener {
             e.getPlayer().teleport(loc);
             new Locations().clearTeleportKeyFromRedis(new Locations().getTeleportationToLocationKey(e.getPlayer()));
         } catch (Exception ex) {
-            Bukkit.getLogger().severe("AHHHHHHHHHHHHHHHHHHHHHHHHHH: " + ex);
+            Bukkit.getLogger().severe("Error: " + ex);
         }
     }
 
