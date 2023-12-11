@@ -4,6 +4,7 @@ import com.koolkidzmc.kkzones.border.BorderChecker;
 import com.koolkidzmc.kkzones.border.OnJoin;
 import com.koolkidzmc.kkzones.commands.GotoZoneCommand;
 import com.koolkidzmc.kkzones.commands.ZonesCommand;
+import com.koolkidzmc.kkzones.dataMisc.MessageSyncer;
 import com.koolkidzmc.kkzones.dataMisc.ServerStorage;
 import com.koolkidzmc.kkzones.dataMisc.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
@@ -62,6 +63,7 @@ public final class KKZones extends JavaPlugin {
         console.info("Starting Listeners...");
         console.info("Starting Join Listener...");
         this.getServer().getPluginManager().registerEvents(new OnJoin(this), this);
+        this.getServer().getPluginManager().registerEvents(new MessageSyncer(), this);
         console.info("Setting Outgoing Plugin Channel to [BungeeCord]...");
         try {
             getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
