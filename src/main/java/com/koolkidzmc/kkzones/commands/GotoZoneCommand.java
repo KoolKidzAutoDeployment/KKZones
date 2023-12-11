@@ -31,7 +31,9 @@ public class GotoZoneCommand implements CommandExecutor {
                     player.sendMessage(KKZones.getPlugin(KKZones.class).getConfig().getString("prefix") + "&aSending you to &f" + args[0]);
                     return true;
                 } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
+                    player.sendMessage("Error lol check console.");
+                    return false;
                 }
             }
         }

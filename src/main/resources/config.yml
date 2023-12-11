@@ -3,6 +3,8 @@ prefix: "&d&lKKZones &8>>"
 # The name of the server running the plugin, as defined in the velocity/bungeecord config.
 server: ""
 
+slot: 10
+
 # If this server is the spawn
 spawn: false
 # Spawn location, only set if this config is on the spawn server
