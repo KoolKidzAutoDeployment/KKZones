@@ -29,7 +29,7 @@ public class MessageSyncer implements Listener {
             }
             */
             jedis = KKZones.pool.getResource();
-            jedis.publish("kkzones.chatsync", e.getMessage());
+            jedis.publish("kkzones.chatsync", message);
             e.setCancelled(true);
         } catch (JedisException ex)  {
             KKZones.getPlugin(KKZones.class).getLogger().severe("Error using Redis pubsub: " + ex);
