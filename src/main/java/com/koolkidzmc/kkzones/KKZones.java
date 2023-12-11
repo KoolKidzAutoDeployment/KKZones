@@ -10,6 +10,7 @@ import com.koolkidzmc.kkzones.dataMisc.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
 
 import com.koolkidzmc.kkzones.utils.TaskManager;
+import lombok.Getter;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 
 public final class KKZones extends JavaPlugin {
     Logger console = getLogger();
+    @Getter
     private Chat chatter = null;
     FileConfiguration config = getConfig();
     public static JedisPool pool;
@@ -43,7 +45,7 @@ public final class KKZones extends JavaPlugin {
         this.getCommand("zone").setExecutor(new GotoZoneCommand());
         if (!setupVault()) {
             console.severe("PLUH no vault bruh");
-            getServer().getPluginManager().disablePlugin(KKCore.getPlugin(KKCore.class));
+            getServer().getPluginManager().disablePlugin(KKZones.getPlugin(KKZones.class));
             return;
         }
         startListeners();
