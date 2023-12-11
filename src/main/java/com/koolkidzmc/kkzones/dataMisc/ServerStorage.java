@@ -16,6 +16,4 @@ public class ServerStorage {
         this.cfg = plugin.getConfig();
         ServerStorage.servers = servers;
     }
-
-
 }

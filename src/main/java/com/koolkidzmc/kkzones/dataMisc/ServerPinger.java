@@ -32,10 +32,16 @@ public class ServerPinger {
         long startTime = System.currentTimeMillis();
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            double tps = Math.min(plugin.getServer().getTPS()[0], 20.0);
             long lastHeartBeat = System.currentTimeMillis();
+            int onlinePlayers = Bukkit.getOnlinePlayers().size();
             JSONObject serverData = new JSONObject();
             serverData.put("server", ServerStorage.currentServer);
+            serverData.put("slot", plugin.getConfig().getInt("servercommand-slot"));
+            serverData.put("tps", tps);
+            serverData.put("startTime", startTime);
             serverData.put("lastHeartBeat", lastHeartBeat);
+            serverData.put("onlinePlayers", onlinePlayers);
             String serverDataJson = new Gson().toJson(serverData);
 
             Jedis jedis = null;
