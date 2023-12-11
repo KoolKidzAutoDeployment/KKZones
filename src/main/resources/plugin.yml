@@ -2,3 +2,26 @@ name: KKZones
 version: '${version}'
 main: com.koolkidzmc.kkzones.KKZones
 api-version: '1.18'
+
+permissions:
+  koolkidz.zones.menus:
+    description: Allows /zone and /zones
+    default: false
+
+commands:
+  zones:
+    description: Shows the zones
+    permission: koolkidz.zones.menus
+    usage: /zones
+    aliases:
+      - zonelist
+      - regions
+      - regionlist
+  zone:
+    description: Teleports you to the zone
+    permission: koolkidz.zones.menus
+    usage: /zone <zone>
+    aliases:
+      - zonetp
+      - tpzone
+      - gotozone
