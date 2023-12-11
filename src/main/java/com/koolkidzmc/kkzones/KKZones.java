@@ -10,7 +10,9 @@ import com.koolkidzmc.kkzones.dataMisc.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
 
 import com.koolkidzmc.kkzones.utils.TaskManager;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import redis.clients.jedis.Jedis;
@@ -22,6 +24,7 @@ import java.util.logging.Logger;
 
 public final class KKZones extends JavaPlugin {
     Logger console = getLogger();
+    private Chat chatter = null;
     FileConfiguration config = getConfig();
     public static JedisPool pool;
     public Jedis jedis = null;
@@ -38,7 +41,11 @@ public final class KKZones extends JavaPlugin {
 
         this.getCommand("zones").setExecutor(new ZonesCommand(this));
         this.getCommand("zone").setExecutor(new GotoZoneCommand());
-
+        if (!setupVault()) {
+            console.severe("PLUH no vault bruh");
+            getServer().getPluginManager().disablePlugin(KKCore.getPlugin(KKCore.class));
+            return;
+        }
         startListeners();
     }
 
@@ -89,6 +96,23 @@ public final class KKZones extends JavaPlugin {
             console.severe("Error Starting Asynchronous Tasks: " + e);
         }
         console.info("Listeners Started!");
+    }
+
+    private boolean setupVault() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            // Vault plugin not found
+            return false;
+        }
+
+
+        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
+        if (chatProvider == null) {
+            // Chat service not found
+            return false;
+        }
+        chatter = chatProvider.getProvider();
+
+        return chatter != null;
     }
 
     private void initRedisPubSub(){
