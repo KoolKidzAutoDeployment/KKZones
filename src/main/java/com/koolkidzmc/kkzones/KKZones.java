@@ -8,10 +8,13 @@ import com.koolkidzmc.kkzones.dataMisc.ServerStorage;
 import com.koolkidzmc.kkzones.dataMisc.ServerPinger;
 import com.koolkidzmc.kkzones.utils.FastInvManager;
 
+import com.koolkidzmc.kkzones.utils.TaskManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.exceptions.JedisException;
 
 import java.util.logging.Logger;
@@ -20,6 +23,8 @@ public final class KKZones extends JavaPlugin {
     Logger console = getLogger();
     FileConfiguration config = getConfig();
     public static JedisPool pool;
+    public Jedis jedis = null;
+    JedisPubSub pubSub;
     @Override
     public void onEnable() {
         console.info("Starting KKZones on the " + config.getString("server") + " server!");
@@ -28,6 +33,7 @@ public final class KKZones extends JavaPlugin {
 
         ServerStorage.currentServer = config.getString("server");
         FastInvManager.register(this);
+        pubSub = new PubSub();
 
         this.getCommand("zones").setExecutor(new ZonesCommand(this));
         this.getCommand("zone").setExecutor(new GotoZoneCommand());
@@ -68,6 +74,7 @@ public final class KKZones extends JavaPlugin {
         try {
             pool = new JedisPool(config.getString("redis.host"), config.getInt("redis.port"));
             pool.setMaxTotal(35);
+            initRedisPubSub();
             console.info("Redis Connected Successfully!");
         } catch (JedisException e)  {
             console.severe("Error Starting Redis Pool: " + e);
@@ -80,6 +87,22 @@ public final class KKZones extends JavaPlugin {
             console.severe("Error Starting Asynchronous Tasks: " + e);
         }
         console.info("Listeners Started!");
+    }
+
+    private void initRedisPubSub(){
+        console.info("Starting & Connecting to Redis PubSub...");
+        try {
+            jedis = pool.getResource();
+            console.info("Attempting password: " + config.getString("redis.password"));
+            jedis.auth(config.getString("redis.password"));
+            TaskManager.Async.run(()-> {
+                jedis.subscribe(pubSub, "kkzones.chatsync");
+            });
+            console.info("Redis Connected pubsub!");
+        } catch (JedisException e)  {
+            console.severe("Error Starting Redis pubsub: " + e);
+            e.printStackTrace();
+        }
     }
 
 }
