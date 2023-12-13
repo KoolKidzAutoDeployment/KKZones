@@ -5,6 +5,7 @@ import com.koolkidzmc.kkzones.KKZones;
 import com.koolkidzmc.kkzones.utils.Locations;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +23,7 @@ public class OnJoin implements Listener {
                 Location loc = new Location(e.getPlayer().getWorld(), plugin.getConfig().getDouble("x"), plugin.getConfig().getDouble("y"), plugin.getConfig().getDouble("z"));
                 loc.setYaw((float) plugin.getConfig().getDouble("yaw"));
                 Bukkit.getLogger().info(plugin.getConfig().getString("world"));
-                World world = Bukkit.getServer().getWorld(plugin.getConfig().getString("world"));
+                World world = plugin.getServer().getWorld(NamespacedKey.fromString(plugin.getConfig().getString("world")));
                 Bukkit.getLogger().info(world.toString());
                 loc.setWorld(world);
                 Bukkit.getLogger().info(loc.toString());
