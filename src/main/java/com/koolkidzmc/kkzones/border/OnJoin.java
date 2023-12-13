@@ -35,7 +35,7 @@ public class OnJoin implements Listener {
             e.getPlayer().teleport(loc);
             new Locations().clearTeleportKeyFromRedis(new Locations().getTeleportationToLocationKey(e.getPlayer()));
         } catch (Exception ex) {
-            Bukkit.getLogger().severe("Error: " + ex);
+            ex.printStackTrace();
         }
     }
 
