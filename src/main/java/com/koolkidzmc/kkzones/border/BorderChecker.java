@@ -113,7 +113,6 @@ public class BorderChecker {
         }
     };
 
-
     static Runnable checkLocZones = () -> {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getLocation().getBlockX() >= 9997.00) {
