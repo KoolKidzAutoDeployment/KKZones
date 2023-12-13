@@ -20,7 +20,7 @@ public class OnJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         try {
             if (plugin.getConfig().getBoolean("spawn")) {
-                World warpWorld = plugin.getServer().getWorld(NamespacedKey.fromString(plugin.getConfig().getString("monthly-crate-warp.world")));
+                World warpWorld = plugin.getServer().getWorld(NamespacedKey.fromString(plugin.getConfig().getString("world")));
                 double warpX = plugin.getConfig().getDouble("x");
                 double warpY = plugin.getConfig().getDouble("y");
                 double warpZ = plugin.getConfig().getDouble("z");
