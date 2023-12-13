@@ -20,13 +20,12 @@ public class OnJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         try {
             if (plugin.getConfig().getBoolean("spawn")) {
-                Location loc = new Location(e.getPlayer().getWorld(), plugin.getConfig().getDouble("x"), plugin.getConfig().getDouble("y"), plugin.getConfig().getDouble("z"));
+                World warpWorld = plugin.getServer().getWorld(NamespacedKey.fromString(plugin.getConfig().getString("monthly-crate-warp.world")));
+                double warpX = plugin.getConfig().getDouble("x");
+                double warpY = plugin.getConfig().getDouble("y");
+                double warpZ = plugin.getConfig().getDouble("z");
+                Location loc = new Location(warpWorld, warpX, warpY, warpZ);
                 loc.setYaw((float) plugin.getConfig().getDouble("yaw"));
-                Bukkit.getLogger().info(plugin.getConfig().getString("world"));
-                World world = plugin.getServer().getWorld(NamespacedKey.fromString(plugin.getConfig().getString("world")));
-                Bukkit.getLogger().info(world.toString());
-                loc.setWorld(world);
-                Bukkit.getLogger().info(loc.toString());
                 e.getPlayer().teleport(loc);
                 new Locations().clearTeleportKeyFromRedis(new Locations().getTeleportationToLocationKey(e.getPlayer()));
             }
