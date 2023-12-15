@@ -21,11 +21,13 @@ public class OnJoin implements Listener {
         try {
             if (plugin.getConfig().getBoolean("spawn")) {
                 World warpWorld = plugin.getServer().getWorld(NamespacedKey.fromString(plugin.getConfig().getString("world")));
+                plugin.getLogger().warning(warpWorld.getName());
                 double warpX = plugin.getConfig().getDouble("x");
                 double warpY = plugin.getConfig().getDouble("y");
                 double warpZ = plugin.getConfig().getDouble("z");
                 Location loc = new Location(warpWorld, warpX, warpY, warpZ);
                 loc.setYaw((float) plugin.getConfig().getDouble("yaw"));
+                plugin.getLogger().warning(loc.toString());
                 e.getPlayer().teleport(loc);
                 new Locations().clearTeleportKeyFromRedis(new Locations().getTeleportationToLocationKey(e.getPlayer()));
             }
